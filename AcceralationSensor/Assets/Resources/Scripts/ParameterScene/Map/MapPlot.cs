@@ -14,7 +14,7 @@ public class MapPlot : MonoBehaviour
     private LineRenderer locus = null;
     public Image m_img;
 
-    private Entity_Lab_1F es;
+    private Entity_Lab es;
     private List<GameObject> Nodes = new List<GameObject>();
     private List<Vector3> pos_v = new List<Vector3>();
 
@@ -29,24 +29,21 @@ public class MapPlot : MonoBehaviour
         this.labelStyle.normal.textColor = Color.red;
 
         locus = gameObject.GetComponent<LineRenderer>();
-        es = Resources.Load("Assets/MapNode") as Entity_Lab_1F;
+        es = Resources.Load("Assets/MapNode") as Entity_Lab;
 
         // 線の幅
         locus.startWidth = 1f;
         locus.endWidth = 1f;
 
+        //ユーザーの初期位置をセットしておく
         AddNewPosition(new Vector2(0.0f, 0.0f));
-        for (int i = 0; i < es.sheets[0].list.Count; i++)
-        {
-            addNewNode(new Vector2(es.sheets[0].list[i].X, es.sheets[0].list[i].Y));
-        }
+
+        //エクセルに入力したノードの追加
+        LoadNodeList(1);
         setVisible(false);
     }
 
-    private void Update()
-    {
-    }
-
+    //ユーザーの座標更新
     public void AddNewPosition(Vector2 newpos)
     {
         //座標追加
@@ -60,6 +57,7 @@ public class MapPlot : MonoBehaviour
         }
     }
 
+    //ユーザーの座標をプロット
     private void PlotPosition()
     {
         if (visible == true)
@@ -69,10 +67,6 @@ public class MapPlot : MonoBehaviour
             {
                 locus.SetPosition(i, pos_v[i]);
             }
-        }
-        else
-        {
-            //locus.SetPosition(0, pos_v[0]);
         }
     }
 
@@ -106,9 +100,21 @@ public class MapPlot : MonoBehaviour
         PlotPosition();
     }
 
-    private void addNewNode(Vector2 pos)
+    //ノードを追加してマップ上に表示、IDも振る
+    private void addNewNode(int id, Vector2 pos)
     {
         GameObject obj = (GameObject)Resources.Load("Prehabs/MapNode");
+        obj.GetComponentInChildren<TextMesh>().text = id.ToString();
         Nodes.Add((GameObject)Instantiate(obj, new Vector3(pos.x, pos.y, 0f) * 5.5f, Quaternion.identity));
+    }
+
+    //引数の階層のノードをエクセルからまとめてロード
+    private void LoadNodeList(int floor)
+    {
+        floor--;
+        for (int i = 0; i < es.sheets[floor].list.Count; i++)
+        {
+            addNewNode(es.sheets[floor].list[i].ID, new Vector2(es.sheets[floor].list[i].X, es.sheets[floor].list[i].Y));
+        }
     }
 }

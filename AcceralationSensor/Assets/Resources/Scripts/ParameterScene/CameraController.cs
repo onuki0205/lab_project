@@ -40,7 +40,7 @@ public class CameraController : MonoBehaviour
                 _firstTouch = false;
             }
             float zoom = Input.GetAxis("Mouse ScrollWheel");
-            scale = scale - zoom*30;
+            scale = scale - zoom * 30;
             if (scale < 0.1f)
             {
                 scale = 0.1f;
@@ -105,7 +105,18 @@ public class CameraController : MonoBehaviour
         _beforeVec = pos1;
 
         //座標移動の処理
+        var tmppos = cam.transform.position;
         cam.transform.position = transform.position - transform.rotation * diff;
+        
+        //移動限界の設定
+        if (cam.transform.position.x < -300 || cam.transform.position.x > 300)
+        {
+            cam.transform.position = new Vector3(tmppos.x, cam.transform.position.y, cam.transform.position.z);
+        }
+        if (cam.transform.position.y < -300 || cam.transform.position.y > 300)
+        {
+            cam.transform.position = new Vector3(cam.transform.position.x, tmppos.y, cam.transform.position.z);
+        }
     }
 
     private void RotateCamera(Vector3 pos1, Vector3 pos2)

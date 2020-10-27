@@ -10,7 +10,7 @@ using NPOI.SS.UserModel;
 public class MapNode_importer : AssetPostprocessor {
 	private static readonly string filePath = "Assets/MapNode.xls";
 	private static readonly string exportPath = "Assets/MapNode.asset";
-	private static readonly string[] sheetNames = { "Lab_1F", };
+	private static readonly string[] sheetNames = { "Lab_1F","Lab_2F","Lab_3F", };
 	
 	static void OnPostprocessAllAssets (string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
 	{
@@ -18,9 +18,9 @@ public class MapNode_importer : AssetPostprocessor {
 			if (!filePath.Equals (asset))
 				continue;
 				
-			Entity_Lab_1F data = (Entity_Lab_1F)AssetDatabase.LoadAssetAtPath (exportPath, typeof(Entity_Lab_1F));
+			Entity_Lab data = (Entity_Lab)AssetDatabase.LoadAssetAtPath (exportPath, typeof(Entity_Lab));
 			if (data == null) {
-				data = ScriptableObject.CreateInstance<Entity_Lab_1F> ();
+				data = ScriptableObject.CreateInstance<Entity_Lab> ();
 				AssetDatabase.CreateAsset ((ScriptableObject)data, exportPath);
 				data.hideFlags = HideFlags.NotEditable;
 			}
@@ -41,14 +41,14 @@ public class MapNode_importer : AssetPostprocessor {
 						continue;
 					}
 
-					Entity_Lab_1F.Sheet s = new Entity_Lab_1F.Sheet ();
+					Entity_Lab.Sheet s = new Entity_Lab.Sheet ();
 					s.name = sheetName;
 				
 					for (int i=1; i<= sheet.LastRowNum; i++) {
 						IRow row = sheet.GetRow (i);
 						ICell cell = null;
 						
-						Entity_Lab_1F.Param p = new Entity_Lab_1F.Param ();
+						Entity_Lab.Param p = new Entity_Lab.Param ();
 						
 					cell = row.GetCell(0); p.ID = (int)(cell == null ? 0 : cell.NumericCellValue);
 					cell = row.GetCell(1); p.X = (float)(cell == null ? 0 : cell.NumericCellValue);
