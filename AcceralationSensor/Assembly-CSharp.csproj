@@ -65,7 +65,7 @@
      <Compile Include="Assets\Resources\Scripts\ParameterScene\Map\RouteCalcurator.cs" />
      <Compile Include="Assets\Resources\Scripts\ParameterScene\Sensor\SensorText.cs" />
      <Compile Include="Assets\Resources\Scripts\ParameterScene\Sensor\WalkcounterText.cs" />
-     <Compile Include="Assets\Terasurware\Classes\Entity_Lab.cs" />
+     <Compile Include="Assets\Terasurware\Classes\Entity_LabNode.cs" />
      <None Include="Assets\Vuforia\Shaders\ColoredLines.shader" />
      <None Include="Assets\Vuforia\Shaders\CameraDiffuse.shader" />
      <None Include="Assets\Vuforia\Shaders\VertexLitWithZ.shader" />

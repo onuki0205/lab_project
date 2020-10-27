@@ -8,14 +8,14 @@ using System.IO;
 public class RouteCalcurator : MonoBehaviour
 {
 
-    private Entity_Lab es;
+    private Entity_LabNode es;
     private int NodeNum;
 
     private List<Node> nodes = new List<Node>();
 
     void Start()
     {
-        es = Resources.Load("Assets/MapNode") as Entity_Lab;
+        es = Resources.Load("Assets/Lab_Data") as Entity_LabNode;
         NodeNum = es.sheets[0].list.Count;
 
         for (int i = 0; i < NodeNum; i++)

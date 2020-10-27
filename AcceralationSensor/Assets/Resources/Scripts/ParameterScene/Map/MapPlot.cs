@@ -14,7 +14,7 @@ public class MapPlot : MonoBehaviour
     private LineRenderer locus = null;
     public Image m_img;
 
-    private Entity_Lab es;
+    private Entity_LabNode es;
     private List<GameObject> Nodes = new List<GameObject>();
     private List<Vector3> pos_v = new List<Vector3>();
 
@@ -29,7 +29,7 @@ public class MapPlot : MonoBehaviour
         this.labelStyle.normal.textColor = Color.red;
 
         locus = gameObject.GetComponent<LineRenderer>();
-        es = Resources.Load("Assets/MapNode") as Entity_Lab;
+        es = Resources.Load("Assets/Lab_Data") as Entity_LabNode;
 
         // 線の幅
         locus.startWidth = 1f;
@@ -39,7 +39,7 @@ public class MapPlot : MonoBehaviour
         AddNewPosition(new Vector2(0.0f, 0.0f));
 
         //エクセルに入力したノードの追加
-        LoadNodeList(1);
+        LoadNodeList(2);
         setVisible(false);
     }
 

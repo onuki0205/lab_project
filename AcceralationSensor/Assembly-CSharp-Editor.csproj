@@ -53,7 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Terasurware\Classes\Editor\MapNode_importer.cs" />
+     <Compile Include="Assets\Terasurware\Classes\Editor\Lab_Data_importer.cs" />
      <Compile Include="Assets\Terasurware\Editor\ExcelImporterMaker.cs" />
      <None Include="Assets\Terasurware\Editor\ExportTemplate.txt" />
      <None Include="Assets\Terasurware\Editor\ExportTemplate2.txt" />
