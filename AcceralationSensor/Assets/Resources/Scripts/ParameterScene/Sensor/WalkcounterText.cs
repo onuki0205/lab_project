@@ -49,16 +49,16 @@ public class WalkcounterText : MonoBehaviour
     //StepDitection2に使う
     bool threshold = false;
     float acc;
-    float maxlimit = 0.1f;
+    float maxlimit = 0.09f;
     float minlimit = 0.04f;
-    float maxoverlimit = 0.08f;
+    float maxoverlimit = 0.2f;
     float minoverlimit = 0.03f;
     int _step = 0;
 
     //距離計測用
     private float height = 170;
     private float stride = 170 * 0.45f;//cm
-    public static Vector2 distance;
+    public static Vector2 distance = new Vector2(-1.5f, 27.7f);
 
     //TestCompass
     private Vector3 H;
@@ -102,8 +102,6 @@ public class WalkcounterText : MonoBehaviour
         CalcAccvertical();
         //StepDitection();
         StepDitection2();
-
-        //        CorrectCompus();
         TestCompass();
 
     }
@@ -154,9 +152,9 @@ public class WalkcounterText : MonoBehaviour
                         case 8:
                             text = string.Format("H-Z:{0}", H.z);
                             break;
-                        //case 9:
-                        //    text = string.Format("Qat-W:{0}", Input.gyro.attitude.w);
-                        //    break;
+                        case 9:
+                           text = string.Format("accv:{0}", absaccvertical);
+                           break;
                         case 10:
                             text = string.Format("Scompass:{0}", System.Math.Round(Input.compass.magneticHeading, digit));
                             break;

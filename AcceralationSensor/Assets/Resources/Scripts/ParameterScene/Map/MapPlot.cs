@@ -36,10 +36,10 @@ public class MapPlot : MonoBehaviour
         locus.endWidth = 1f;
 
         //ユーザーの初期位置をセットしておく
-        AddNewPosition(new Vector2(0.0f, 0.0f));
+        AddNewPosition(new Vector2(-1.5f, 27.7f));
 
         //エクセルに入力したノードの追加
-        LoadNodeList(2);
+        LoadNodeList(1);
         setVisible(false);
     }
 
