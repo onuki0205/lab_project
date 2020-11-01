@@ -75,7 +75,7 @@ MonoBehaviour:
   m_MinSize: {x: 277, y: 348}
   m_MaxSize: {x: 10002, y: 14048}
   vertical: 1
-  controlID: 97
+  controlID: 53
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_MinSize: {x: 477, y: 348}
   m_MaxSize: {x: 14002, y: 14048}
   vertical: 0
-  controlID: 95
+  controlID: 51
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -148,7 +148,7 @@ MonoBehaviour:
     y: 0
     width: 1536
     height: 781
-  m_MinSize: {x: 950, y: 398}
+  m_MinSize: {x: 950, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &7
 MonoBehaviour:
@@ -217,7 +217,7 @@ MonoBehaviour:
   m_MinSize: {x: 477, y: 348}
   m_MaxSize: {x: 14002, y: 14048}
   vertical: 0
-  controlID: 96
+  controlID: 52
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -245,7 +245,7 @@ MonoBehaviour:
   - {fileID: 16}
   - {fileID: 11}
   m_Selected: 2
-  m_LastSelected: 1
+  m_LastSelected: 2
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -319,20 +319,20 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Resources/Assets
+    - Assets/Resources/Excel
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Resources/Assets
+  - Assets/Resources/Excel
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\myPC\Desktop\lab\project\AcceralationSensor
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: 8c2a0000
-    m_LastClickedID: 10892
-    m_ExpandedIDs: 000000004a28000096280000ba280000c6280000ec2a0000142b00002c2b0000302b000000ca9a3b
+    m_SelectedIDs: f02a0000
+    m_LastClickedID: 10992
+    m_ExpandedIDs: 000000004a28000096280000ba280000c6280000ec280000e82a0000122b00002c2b0000302b000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -360,7 +360,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000004a28000096280000ba280000ec280000e6290000ec2a0000142b00002c2b0000302b0000
+    m_ExpandedIDs: 000000004a28000096280000ba280000c6280000e82a0000122b00002c2b0000302b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -436,10 +436,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 252
-    y: 525.60004
-    width: 1282
-    height: 259
+    x: 323.2
+    y: 515.2
+    width: 1211
+    height: 269
   m_PersistentViewDataDictionary: {fileID: 0}
 --- !u!114 &14
 MonoBehaviour:
@@ -472,7 +472,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: defbffffa82b0000c62b0000
+      m_ExpandedIDs: 62baffff74baffffbabcffffbebcffff56bdffff68bdffffaebfffffb2bfffff3ec0ffff50c0ffff96c2ffff9ac2ffff26c3ffff38c3ffff7ec5ffff82c5ffff0ec6ffff20c6ffff66c8ffff6ac8fffff6c8ffff08c9ffff4ecbffff52cbffffe4cbfffff6cbfffffacbfffffecbffff44ccffff56ccffffa0ceffffa8ceffffdefbffffa82b0000c62b0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -517,10 +517,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 252
+    x: 323.2
     y: 73.6
-    width: 1282
-    height: 432
+    width: 1211
+    height: 422
   m_PersistentViewDataDictionary: {fileID: 0}
   m_WindowGUID: 6faf11f620dba4a4aaed0b4cc7834490
   m_SceneLighting: 0
@@ -612,10 +612,10 @@ MonoBehaviour:
     m_VRangeLocked: 0
     hZoomLockedByDefault: 0
     vZoomLockedByDefault: 0
-    m_HBaseRangeMin: -864
-    m_HBaseRangeMax: 864
-    m_VBaseRangeMin: -432
-    m_VBaseRangeMax: 432
+    m_HBaseRangeMin: -253.2
+    m_HBaseRangeMax: 253.2
+    m_VBaseRangeMin: -202.5
+    m_VBaseRangeMax: 202.5
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -635,7 +635,7 @@ MonoBehaviour:
       y: 17
       width: 1211
       height: 405
-    m_Scale: {x: 0.46875003, y: 0.46875}
+    m_Scale: {x: 1, y: 1}
     m_Translation: {x: 605.5, y: 202.5}
     m_MarginLeft: 0
     m_MarginRight: 0
@@ -643,12 +643,12 @@ MonoBehaviour:
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -1291.7333
-      y: -432
-      width: 2583.4666
-      height: 864
+      x: -605.5
+      y: -202.5
+      width: 1211
+      height: 405
     m_MinimalGUI: 1
-  m_defaultScale: 0.46875
+  m_defaultScale: 1
   m_TargetTexture: {fileID: 0}
   m_CurrentColorSpace: 0
   m_LastWindowPixelSize: {x: 1513.75, y: 527.5}

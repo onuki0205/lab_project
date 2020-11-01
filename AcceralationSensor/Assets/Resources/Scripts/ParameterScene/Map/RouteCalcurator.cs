@@ -32,7 +32,7 @@ public class RouteCalcurator : MonoBehaviour
         Debug.Log("nameの１行目：" + es.sheets[0].list[0].X);
         Debug.Log("numberの2行目：" + es.sheets[0].list[1].Y);
         Debug.Log("numberの2行目：" + NodeNum);
-        List<int> route = dikstra(0, 54);
+        List<int> route = dikstra(46, 49);
         foreach (int r in route)
         {
             Debug.Log(r + " ");
