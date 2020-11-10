@@ -6,6 +6,7 @@ public class CameraController : MonoBehaviour
 {
     float scale = 100f;
     private Camera cam;
+    private bool frozen = false;
 
     int _beforeTouchCount = 0;
     bool _firstTouch = true;
@@ -21,7 +22,10 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Controller();
+        if (frozen == false)
+        {
+            Controller();
+        }
     }
 
     private void Controller()
@@ -107,7 +111,7 @@ public class CameraController : MonoBehaviour
         //座標移動の処理
         var tmppos = cam.transform.position;
         cam.transform.position = transform.position - transform.rotation * diff;
-        
+
         //移動限界の設定
         if (cam.transform.position.x < -300 || cam.transform.position.x > 300)
         {
@@ -175,5 +179,9 @@ public class CameraController : MonoBehaviour
         cam.fieldOfView = scale;
     }
 
+    public void setFrozen(bool b)
+    {
+        frozen = b;
+    }
 
 }

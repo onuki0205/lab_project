@@ -29,7 +29,7 @@ public class MapPlot : MonoBehaviour
         this.labelStyle.normal.textColor = Color.red;
 
         locus = gameObject.GetComponent<LineRenderer>();
-        es = Resources.Load("Assets/Lab_Data") as Entity_LabNode;
+        es = Resources.Load("Assets/Lab_NodeList") as Entity_LabNode;
 
         // 線の幅
         locus.startWidth = 1f;
@@ -37,9 +37,8 @@ public class MapPlot : MonoBehaviour
 
         //ユーザーの初期位置をセットしておく
         AddNewPosition(new Vector2(-1.5f, 27.7f));
-
         //エクセルに入力したノードの追加
-        LoadNodeList(1);
+        LoadNodeList(2);
         setVisible(false);
     }
 

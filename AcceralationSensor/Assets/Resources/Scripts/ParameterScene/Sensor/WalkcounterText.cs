@@ -15,7 +15,8 @@ public class WalkcounterText : MonoBehaviour
 
     private GUIStyle labelStyle;    //テキスト表示のためのラベル
     private int digit;              //少数をいくつまで表示するか
-    public MapPlot mapplot;         //MapPlotに値を渡すため
+    public MapPlot mapplot;         //MapPlotに値を渡す
+    public RouteCalcurator rc;
     private bool visible = true;
 
 
@@ -31,20 +32,20 @@ public class WalkcounterText : MonoBehaviour
 
     //StepDitectionに使う変数たち
     private int step = 0;//歩数
-    //オープンソースなので自分が分かる範囲だけコメント記述
-    private float[] mLastValues = new float[3 * 2];//最後の加速度(x,y,z平均)の値
-    private float[] mScale = new float[2];//不明
-    private float mYOffset;//不明
-    private float[] mLastDirections = new float[3 * 2];//最後の鉛直方向の加速度が上か下か
-    private float[][] mLastExtremes = { new float[3 * 2], new float[3 * 2] };//最後の極大値, 極小値
-    private float[] mLastDiff = new float[3 * 2];//最後の極大, 極小値の差(絶対値)
-    private int mLastMatch = -1;//歩行検知時の加速方向の向き
-    private float diff = 0;//極大, 極小値の差(絶対値)
-    private float mLimit;//diff下限(この値未満は無視)
-    private float lLimit;//diff上限(この値より上は無視)
-    private static long now = 0;//検知したときの時間
-    private static long last = 0;//前検知したときの時間
-    private int stepcooltime;//連続検知回避用クールタイム
+    // //オープンソースなので自分が分かる範囲だけコメント記述
+    // private float[] mLastValues = new float[3 * 2];//最後の加速度(x,y,z平均)の値
+    // private float[] mScale = new float[2];//不明
+    // private float mYOffset;//不明
+    // private float[] mLastDirections = new float[3 * 2];//最後の鉛直方向の加速度が上か下か
+    // private float[][] mLastExtremes = { new float[3 * 2], new float[3 * 2] };//最後の極大値, 極小値
+    // private float[] mLastDiff = new float[3 * 2];//最後の極大, 極小値の差(絶対値)
+    // private int mLastMatch = -1;//歩行検知時の加速方向の向き
+    // private float diff = 0;//極大, 極小値の差(絶対値)
+    // private float mLimit;//diff下限(この値未満は無視)
+    // private float lLimit;//diff上限(この値より上は無視)
+    // private static long now = 0;//検知したときの時間
+    // private static long last = 0;//前検知したときの時間
+    // private int stepcooltime;//連続検知回避用クールタイム
 
     //StepDitection2に使う
     bool threshold = false;
@@ -59,6 +60,7 @@ public class WalkcounterText : MonoBehaviour
     private float height = 170;
     private float stride = 170 * 0.45f;//cm
     public static Vector2 distance = new Vector2(-1.5f, 27.7f);
+    public Userstate user = new Userstate();
 
     //TestCompass
     private Vector3 H;
@@ -82,12 +84,11 @@ public class WalkcounterText : MonoBehaviour
         this.acceleration = Input.gyro.userAcceleration;
         this.geomagnetism = Input.compass.rawVector;
 
-        InitStepDitection();
+        //InitStepDitection();
 
+        user.position = new Vector2(-1.5f, 27.7f);
+        user.floor = 1;
 
-        //for (int i = 0; i < arr_absaccverinfo.Length; i++) {
-        //    arr_absaccverinfo[i] = 0;
-        //}
     }
 
     // Update is called once per frame
@@ -153,22 +154,22 @@ public class WalkcounterText : MonoBehaviour
                             text = string.Format("H-Z:{0}", H.z);
                             break;
                         case 9:
-                           text = string.Format("accv:{0}", absaccvertical);
-                           break;
+                            text = string.Format("accv:{0}", absaccvertical);
+                            break;
                         case 10:
                             text = string.Format("Scompass:{0}", System.Math.Round(Input.compass.magneticHeading, digit));
                             break;
                         case 11:
-                            text = string.Format("compass:{0}", System.Math.Round(this.compass, digit));
+                            text = string.Format("compass:{0}", System.Math.Round(user.direction, digit));
                             break;
                         case 12:
                             text = string.Format("Step:{0}", step);
                             break;
                         case 13:
-                            text = string.Format("distance-X:{0}", distance.x);
+                            text = string.Format("pos-X:{0}", user.position.x);
                             break;
                         case 14:
-                            text = string.Format("distance-Y:{0}", distance.y);
+                            text = string.Format("pos-Y:{0}", user.position.y);
                             break;
                         case 15:
                             text = string.Format("acc:{0}", acc);
@@ -227,29 +228,28 @@ public class WalkcounterText : MonoBehaviour
     }
 
     //方位計算
-    private void CorrectCompus()
-    {
+    // private void CorrectCompus()
+    // {
 
-        //compass = Input.compass.trueHeading;      //Unityでサポートされてる方法で方位取得
-        //compass = (360 + 270 + Mathf.Atan2(geomagnetism.y, geomagnetism.x) * Mathf.Rad2Deg) % 360;   //3次元地磁気ベクトルから計算(傾き補正なし)
+    //     //compass = Input.compass.trueHeading;      //Unityでサポートされてる方法で方位取得
+    //     //compass = (360 + 270 + Mathf.Atan2(geomagnetism.y, geomagnetism.x) * Mathf.Rad2Deg) % 360;   //3次元地磁気ベクトルから計算(傾き補正なし)
 
-        /*
-        端末の傾きによるズレを補正する
-        下記サイト参考
-        https://myenigma.hatenablog.com/entry/2016/04/10/211919#3%E8%BB%B8%E5%9C%B0%E7%A3%81%E6%B0%97%E3%82%BB%E3%83%B3%E3%82%B5%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%96%B9%E4%BD%8D%E8%A8%88%E7%AE%97%E3%81%AE%E6%96%B9%E6%B3%95
-        
-        https://www.nxp.com/docs/en/application-note/AN4248.pdf
-         */
-        float roll = Mathf.Atan2(gravity.y, gravity.z);
-        float pitch = Mathf.Atan2(-gravity.x, gravity.y * Mathf.Sin(roll) + gravity.z * Mathf.Cos(roll));
+    //     /*
+    //     端末の傾きによるズレを補正する
+    //     下記サイト参考
+    //     https://myenigma.hatenablog.com/entry/2016/04/10/211919#3%E8%BB%B8%E5%9C%B0%E7%A3%81%E6%B0%97%E3%82%BB%E3%83%B3%E3%82%B5%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%96%B9%E4%BD%8D%E8%A8%88%E7%AE%97%E3%81%AE%E6%96%B9%E6%B3%95
 
-        float _y = geomagnetism.z * Mathf.Sin(roll) - geomagnetism.y * Mathf.Cos(roll);
-        float _x = geomagnetism.x * Mathf.Cos(pitch) + geomagnetism.y * Mathf.Sin(roll) * Mathf.Sin(pitch) + geomagnetism.z * Mathf.Sin(pitch) * Mathf.Cos(roll);
+    //     https://www.nxp.com/docs/en/application-note/AN4248.pdf
+    //      */
+    //     float roll = Mathf.Atan2(gravity.y, gravity.z);
+    //     float pitch = Mathf.Atan2(-gravity.x, gravity.y * Mathf.Sin(roll) + gravity.z * Mathf.Cos(roll));
+
+    //     float _y = geomagnetism.z * Mathf.Sin(roll) - geomagnetism.y * Mathf.Cos(roll);
+    //     float _x = geomagnetism.x * Mathf.Cos(pitch) + geomagnetism.y * Mathf.Sin(roll) * Mathf.Sin(pitch) + geomagnetism.z * Mathf.Sin(pitch) * Mathf.Cos(roll);
 
 
-        compass = (270f + Mathf.Atan2(_y, _x) * Mathf.Rad2Deg) % 360;     //地磁気ベクトルから計算(傾き補正あり)
-
-    }
+    //     compass = (270f + Mathf.Atan2(_y, _x) * Mathf.Rad2Deg) % 360;     //地磁気ベクトルから計算(傾き補正あり)
+    // }
 
     public void TestCompass()
     {
@@ -283,22 +283,22 @@ public class WalkcounterText : MonoBehaviour
             }
         }
 
-        compass = (270f + Mathf.Atan2(H.y, H.x) * Mathf.Rad2Deg) % 360;     //地磁気ベクトルから計算(傾き補正あり)
+        user.direction = (270f + Mathf.Atan2(H.y, H.x) * Mathf.Rad2Deg) % 360;     //地磁気ベクトルから計算(傾き補正あり)
     }
 
     //StepDitectionで使う変数を初期化
-    private void InitStepDitection()
-    {
-        int h = 480;
-        mYOffset = h * 0.5f;
-        //float STANDARD_GRAVITY = 9.80665f;//定数
-        float MAGNETIC_FIELD_EARTH_MAX = 60.0f;//定数
-                                               //mScale[0] = -(h * 0.5f * (1.0f / (STANDARD_GRAVITY * 2)));//不明
-        mScale[1] = -(h * 0.5f * (1.0f / (MAGNETIC_FIELD_EARTH_MAX)));//不明
-        mLimit = 0.6f;//diff下限(要調整)
-        lLimit = 2.0f;//diff上限(要調整)
-        stepcooltime = 150; //連続検知回避用クールタイム(要調整)
-    }
+    // private void InitStepDitection()
+    // {
+    //     int h = 480;
+    //     mYOffset = h * 0.5f;
+    //     //float STANDARD_GRAVITY = 9.80665f;//定数
+    //     float MAGNETIC_FIELD_EARTH_MAX = 60.0f;//定数
+    //                                            //mScale[0] = -(h * 0.5f * (1.0f / (STANDARD_GRAVITY * 2)));//不明
+    //     mScale[1] = -(h * 0.5f * (1.0f / (MAGNETIC_FIELD_EARTH_MAX)));//不明
+    //     mLimit = 0.6f;//diff下限(要調整)
+    //     lLimit = 2.0f;//diff上限(要調整)
+    //     stepcooltime = 150; //連続検知回避用クールタイム(要調整)
+    // }
 
     //歩行検知関数(GutHubより)
     /*
@@ -414,5 +414,23 @@ public class WalkcounterText : MonoBehaviour
     public void setVisible(bool b)
     {
         visible = b;
+    }
+}
+
+public class Userstate
+{
+    public Vector2 position { get; set; }
+    public float direction { get; set; }
+    public int floor { get; set; }
+
+    public Userstate()
+    {
+    }
+
+    public Userstate(Vector2 pos, float dir, int fl)
+    {
+        position = pos;
+        direction = dir;
+        floor = fl;
     }
 }
