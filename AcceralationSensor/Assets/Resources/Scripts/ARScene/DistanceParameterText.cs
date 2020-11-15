@@ -6,13 +6,16 @@ public class DistanceParameterText : MonoBehaviour
 {
     private GUIStyle labelStyle;    //テキスト表示のためのラベル
     private int digit = 8;              //少数をいくつまで表示するか
-
+    public Userstate user = null;
     // Start is called before the first frame update
     void Start()
     {
         this.labelStyle = new GUIStyle();
         this.labelStyle.fontSize = Screen.height / 22;
         this.labelStyle.normal.textColor = Color.white;
+
+       user = GameObject.Find("WalkcounterText").GetComponent<WalkcounterText>().user;
+       user.position = new Vector2(0,0);
     }
 
     // Update is called once per frame
@@ -33,10 +36,10 @@ public class DistanceParameterText : MonoBehaviour
             switch (i)
             {
                 case 0:
-                    text = string.Format("distance-X:{0}", System.Math.Round(WalkcounterText.distance.x, digit));
+                    text = string.Format("distance-X:{0}", System.Math.Round(user.position.x, digit));
                     break;
                 case 1:
-                    text = string.Format("distance-Y:{0}", System.Math.Round(WalkcounterText.distance.y, digit));
+                    text = string.Format("distance-Y:{0}", System.Math.Round(user.position.y, digit));
                     break;
             }
 

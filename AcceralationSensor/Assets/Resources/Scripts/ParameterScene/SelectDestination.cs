@@ -11,38 +11,42 @@ public class SelectDestination : MonoBehaviour
 
     private bool visible = false;
     private int floor = 1;
+    private int maxfloor = 3;
     private int page = 0;
-    int count = 0;
+    int[] count;
     int groupnum = 10;
     private List<GameObject> toggles = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
         es = Resources.Load("Assets/Lab_RoomList") as Entity_LabRoom;
-        Debug.Log("gegegegegege");
 
         float offset = Screen.height * 17 / 20;
-
         int shift = 0;
+        count = new int[maxfloor];
 
-        for (int i = 0; i < es.sheets[floor - 1].list.Count; i++)
+        for (int j = 0; j < maxfloor; j++)
         {
-            if (es.sheets[floor - 1].list[i].Name.CompareTo("null") == 0) continue;
-            if (es.sheets[floor - 1].list[i].Name.CompareTo("研究室") == 0) continue;
-            if (es.sheets[floor - 1].list[i].Name.CompareTo("実験室") == 0) continue;
-            if (es.sheets[floor - 1].list[i].Name.CompareTo("図書ラウンジ") == 0) continue;
-            if (es.sheets[floor - 1].list[i].Name.Contains("階段") == true) continue;
-            GameObject t = Instantiate(Resources.Load("Prehabs/Toggle") as GameObject, new Vector3(Screen.width * 2 / 5 + Screen.width * (count / groupnum), offset - shift * 80, 0f), Quaternion.identity);
-            t.transform.parent = this.transform;
-            Debug.Log(es.sheets[floor - 1].list[i].Name);
-            t.GetComponentInChildren<Text>().text = es.sheets[floor - 1].list[i].ID + "  " + es.sheets[floor - 1].list[i].Name;
-            t.GetComponent<Toggle>().group = this.GetComponent<ToggleGroup>();
-            toggles.Add(t);
-            if (++shift == groupnum)
+
+            for (int i = 0; i < es.sheets[j].list.Count; i++)
             {
-                shift = 0;
+                if (es.sheets[j].list[i].Name.CompareTo("null") == 0) continue;
+                if (es.sheets[j].list[i].Name.CompareTo("研究室") == 0) continue;
+                if (es.sheets[j].list[i].Name.CompareTo("実験室") == 0) continue;
+                if (es.sheets[j].list[i].Name.CompareTo("図書ラウンジ") == 0) continue;
+                if (es.sheets[j].list[i].Name.Contains("階段") == true) continue;
+                GameObject t = Instantiate(Resources.Load("Prehabs/Toggle") as GameObject, new Vector3(Screen.width * 2 / 5 + Screen.width * (count[j] / groupnum), offset - shift * 80 + j * Screen.height, 0f), Quaternion.identity);
+                t.transform.parent = this.transform;
+                t.GetComponentInChildren<Text>().text = es.sheets[j].list[i].ID + "  " + es.sheets[j].list[i].Name;
+                t.GetComponent<Toggle>().group = this.GetComponent<ToggleGroup>();
+                toggles.Add(t);
+                if (++shift == groupnum)
+                {
+                    shift = 0;
+                }
+                count[j]++;
             }
-            count++;
+            shift = 0;
         }
         setVisible(false);
     }
@@ -54,7 +58,7 @@ public class SelectDestination : MonoBehaviour
         }
     }
 
-    public void buttonpressed(int type)
+    public void PageChange(int type)
     {
         switch (type)
         {
@@ -72,7 +76,7 @@ public class SelectDestination : MonoBehaviour
                 break;
             //RightButton
             case 1:
-                if (page < count / groupnum)
+                if (page < count[floor-1] / groupnum)
                 {
                     page++;
                     for (int i = 0; i < toggles.Count; i++)
@@ -81,23 +85,35 @@ public class SelectDestination : MonoBehaviour
                     }
                 }
                 break;
-            //OKButton
-            case 2:
-                Toggle activetoggle = this.GetComponent<ToggleGroup>().ActiveToggles().First<Toggle>();
-                string destiID = activetoggle.GetComponentInChildren<Text>().text.Split(' ')[0];
-
-                Entity_LabRoom.Param desti = null;
-                for (int i = 0; i < es.sheets[floor - 1].list.Count; i++)
-                {
-                    if (es.sheets[floor - 1].list[i].ID.CompareTo(destiID) == 0)
-                    {
-                        desti = es.sheets[floor - 1].list[i];
-                        break;
-                    }
-                }
-                rc.routecalcrate(desti);
-                break;
         }
+
+    }
+    public void setDestination()
+    {
+        if (this.GetComponent<ToggleGroup>().AnyTogglesOn() == false) return;
+        Toggle activetoggle = this.GetComponent<ToggleGroup>().ActiveToggles().First<Toggle>();
+        string destiID = activetoggle.GetComponentInChildren<Text>().text.Split(' ')[0];
+
+        Entity_LabRoom.Param desti = null;
+
+        for (int i = 0; i < es.sheets[floor - 1].list.Count; i++)
+        {
+            if (es.sheets[floor - 1].list[i].ID.CompareTo(destiID) == 0)
+            {
+                desti = es.sheets[floor - 1].list[i];
+                break;
+            }
+        }
+        rc.routecalclate(desti);
+    }
+    public void ChangeFloor(int fl)
+    {
+        if (floor == fl) return;
+        for (int i = 0; i < toggles.Count; i++)
+        {
+            toggles[i].transform.position += new Vector3(0, Screen.height * (floor - fl), 0);
+        }
+        floor = fl;
 
     }
 

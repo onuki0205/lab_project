@@ -19,7 +19,6 @@ public class WalkcounterText : MonoBehaviour
     public RouteCalcurator rc;
     private bool visible = true;
 
-
     //センサー関連の情報を保存する
     private Vector3 gravity;        //重力加速度
     private Vector3 euler;          //端末の姿勢(オイラー角、重力加速度から)
@@ -59,8 +58,7 @@ public class WalkcounterText : MonoBehaviour
     //距離計測用
     private float height = 170;
     private float stride = 170 * 0.45f;//cm
-    public static Vector2 distance = new Vector2(-1.5f, 27.7f);
-    public Userstate user = new Userstate();
+    public Userstate user;
 
     //TestCompass
     private Vector3 H;
@@ -69,7 +67,7 @@ public class WalkcounterText : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //gameObject.SetActive(false);
+
 
         //フォント生成
         this.labelStyle = new GUIStyle();
@@ -85,9 +83,8 @@ public class WalkcounterText : MonoBehaviour
         this.geomagnetism = Input.compass.rawVector;
 
         //InitStepDitection();
-
-        user.position = new Vector2(-1.5f, 27.7f);
-        user.floor = 1;
+        user = new Userstate(new Vector2(-2.8f, 23.7f), 0, 1);
+        user.closestnode = rc.calcclosestnode(user);
 
     }
 
@@ -104,6 +101,8 @@ public class WalkcounterText : MonoBehaviour
         //StepDitection();
         StepDitection2();
         TestCompass();
+
+                user.position =  rc.correctposition(user);
 
     }
 
@@ -172,7 +171,7 @@ public class WalkcounterText : MonoBehaviour
                             text = string.Format("pos-Y:{0}", user.position.y);
                             break;
                         case 15:
-                            text = string.Format("acc:{0}", acc);
+                            text = string.Format("closest:{0}", user.closestnode);
                             break;
                         default:
                             break;
@@ -405,10 +404,17 @@ public class WalkcounterText : MonoBehaviour
     {
         float compass_offset = 180;
 
-        distance.x += stride * Mathf.Cos(Mathf.Deg2Rad * (compass + compass_offset)) / 100;
-        distance.y -= stride * Mathf.Sin(Mathf.Deg2Rad * (compass + compass_offset)) / 100;
+        float _x = stride * Mathf.Cos(Mathf.Deg2Rad * (user.direction + compass_offset)) / 100;
+        float _y = stride * Mathf.Sin(Mathf.Deg2Rad * (user.direction + compass_offset)) / 100;
 
-        mapplot.AddNewPosition(distance);
+        user.position += new Vector2(_x, _y);
+
+        user.closestnode = rc.calcclosestnode(user);
+        // if (step % 5 == 0)
+        // {
+        rc.correctposition(user);
+        // }
+        mapplot.AddNewPosition(user.position);
     }
 
     public void setVisible(bool b)
@@ -422,9 +428,11 @@ public class Userstate
     public Vector2 position { get; set; }
     public float direction { get; set; }
     public int floor { get; set; }
+    public int closestnode { get; set; }
 
     public Userstate()
     {
+        closestnode = -1;
     }
 
     public Userstate(Vector2 pos, float dir, int fl)
@@ -432,5 +440,6 @@ public class Userstate
         position = pos;
         direction = dir;
         floor = fl;
+        closestnode = -1;
     }
 }

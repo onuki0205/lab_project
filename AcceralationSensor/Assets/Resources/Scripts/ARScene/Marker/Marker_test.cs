@@ -18,6 +18,7 @@ using Vuforia;
 public class Marker_test : MonoBehaviour, ITrackableEventHandler
 {
     #region PROTECTED_MEMBER_VARIABLES
+    public WalkcounterText wtex;
 
     protected TrackableBehaviour mTrackableBehaviour;
     protected TrackableBehaviour.Status m_PreviousStatus;
@@ -104,8 +105,7 @@ public class Marker_test : MonoBehaviour, ITrackableEventHandler
                 component.enabled = true;
         }
 
-        WalkcounterText.distance.x = 20;
-        WalkcounterText.distance.y = 30;
+        wtex.user.position = new Vector2(20, 30);
     }
 
 

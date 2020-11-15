@@ -13,7 +13,8 @@ public class RouteCalcurator : MonoBehaviour
 
     private List<Node> nodes = new List<Node>();
 
-    private Userstate testuserstate = new Userstate(new Vector2(-1.5f, 27.7f), 0, 1);
+    //new Vector2(-1.5f, 27.7f)
+    private Userstate testuserstate = new Userstate(new Vector2(1.8f, 23.7f), 0, 1);
 
     void Start()
     {
@@ -39,9 +40,12 @@ public class RouteCalcurator : MonoBehaviour
         // }
         // Debug.Log(route_str);
 
-        //closeststaris(testuserstate, "3");
-        routecalcrate(esroom.sheets[1].list[70]);
+        //calccloseststaris(testuserstate, "3");
+        //routecalclate(esroom.sheets[1].list[70]);
+        // testuserstate.closestnode = calcclosestnode(testuserstate);
+        // testuserstate.closestnode = calcclosestnode(testuserstate);
     }
+
 
     private List<int> dikstra(int from, int to, int floor)
     {
@@ -101,7 +105,48 @@ public class RouteCalcurator : MonoBehaviour
         return route;
     }
 
-    private Entity_LabRoom.Param closeststaris(Userstate u, string toID)
+    public int calcclosestnode(Userstate u)
+    {
+        int closest = 0;
+        float closestdist = float.PositiveInfinity;
+
+        if (u.closestnode == -1)
+        {
+            for (int i = 0; i < esnode.sheets[u.floor - 1].list.Count; i++)
+            {
+                Vector2 tmp = new Vector2(esnode.sheets[u.floor - 1].list[i].X, esnode.sheets[u.floor - 1].list[i].Y);
+                float tmpdist = Mathf.Sqrt(Mathf.Pow(u.position.x - tmp.x, 2) + Mathf.Pow(u.position.y - tmp.y, 2));
+                if (tmpdist < closestdist)
+                {
+                    closestdist = tmpdist;
+                    closest = esnode.sheets[u.floor - 1].list[i].ID;
+                }
+            }
+        }
+        else
+        {
+            Vector2 tmp = new Vector2(esnode.sheets[u.floor - 1].list[u.closestnode].X, esnode.sheets[u.floor - 1].list[u.closestnode].Y);
+            float tmpdist = Mathf.Sqrt(Mathf.Pow(u.position.x - tmp.x, 2) + Mathf.Pow(u.position.y - tmp.y, 2));
+            closestdist = tmpdist;
+            closest = u.closestnode;
+
+            List<int> li = nodes[u.closestnode].getconnectlist();
+            for (int i = 0; i < nodes[u.closestnode].getconnectlist().Count; i++)
+            {
+                tmp = new Vector2(esnode.sheets[u.floor - 1].list[li[i]].X, esnode.sheets[u.floor - 1].list[li[i]].Y);
+                tmpdist = Mathf.Sqrt(Mathf.Pow(u.position.x - tmp.x, 2) + Mathf.Pow(u.position.y - tmp.y, 2));
+                if (tmpdist < closestdist)
+                {
+                    closestdist = tmpdist;
+                    closest = esnode.sheets[u.floor - 1].list[li[i]].ID;
+                }
+            }
+
+        }
+        return closest;
+    }
+
+    private Entity_LabRoom.Param calccloseststaris(Userstate u, string toID)
     {
         float mindist = float.PositiveInfinity;
         int minindex = 0;
@@ -124,7 +169,7 @@ public class RouteCalcurator : MonoBehaviour
         return esroom.sheets[u.floor - 1].list[minindex];
     }
 
-    public void routecalcrate(Entity_LabRoom.Param to)
+    public void routecalclate(Entity_LabRoom.Param to)
     {
         Userstate user = testuserstate;
         List<int> route;
@@ -153,7 +198,7 @@ public class RouteCalcurator : MonoBehaviour
         }
         else
         {
-            Entity_LabRoom.Param stair = closeststaris(user, to.ID);
+            Entity_LabRoom.Param stair = calccloseststaris(user, to.ID);
             route = dikstra(userclosestnode, stair.ClosestNode, user.floor);
             foreach (int r in route)
             {
@@ -180,6 +225,100 @@ public class RouteCalcurator : MonoBehaviour
             Debug.Log(route_str);
         }
     }
+    public Vector2 correctposition(Userstate u)
+    {
+
+        // Vector2 tmp = new Vector2(esnode.sheets[u.floor - 1].list[u.closestnode].X, esnode.sheets[u.floor - 1].list[u.closestnode].Y);
+        // float tmpdist = Mathf.Sqrt(Mathf.Pow(u.position.x - tmp.x, 2) + Mathf.Pow(u.position.y - tmp.y, 2));
+
+        // Entity_LabNode.Param clo = esnode.sheets[u.floor - 1].list[u.closestnode];
+        // float closestdist = tmpdist;
+
+        // float secclosestdist = float.PositiveInfinity;
+        // Entity_LabNode.Param sec = null;
+
+        // List<int> li = nodes[u.closestnode].getconnectlist();
+        // for (int i = 0; i < nodes[u.closestnode].getconnectlist().Count; i++)
+        // {
+        //     tmp = new Vector2(esnode.sheets[u.floor - 1].list[li[i]].X, esnode.sheets[u.floor - 1].list[li[i]].Y);
+        //     tmpdist = Mathf.Sqrt(Mathf.Pow(u.position.x - tmp.x, 2) + Mathf.Pow(u.position.y - tmp.y, 2));
+        //     if (tmpdist < secclosestdist)
+        //     {
+        //         secclosestdist = tmpdist;
+        //         sec = esnode.sheets[u.floor - 1].list[li[i]];
+        //     }
+        // }
+
+        // float correct_x = (secclosestdist * clo.X + closestdist * sec.X) / (closestdist + secclosestdist);
+        // float correct_y = (secclosestdist * clo.Y + closestdist * sec.Y) / (closestdist + secclosestdist);
+
+        float mindist = float.PositiveInfinity;
+        int closestnode = 0;
+        List<int> li = nodes[u.closestnode].getconnectlist();
+        for (int i = 0; i < nodes[u.closestnode].getconnectlist().Count; i++)
+        {
+            float tmpdist = calcdistance(u.position, new Vector2(esnode.sheets[u.floor - 1].list[u.closestnode].X, esnode.sheets[u.floor - 1].list[u.closestnode].Y), new Vector2(esnode.sheets[u.floor - 1].list[li[i]].X, esnode.sheets[u.floor - 1].list[li[i]].Y));
+            if (tmpdist < mindist)
+            {
+                mindist = tmpdist;
+                closestnode = esnode.sheets[u.floor - 1].list[li[i]].ID;
+            }
+        }
+
+        //Debug.Log(u.closestnode + "   " + closestnode);
+        return nearest(u.position, new Vector2(esnode.sheets[u.floor - 1].list[u.closestnode].X, esnode.sheets[u.floor - 1].list[u.closestnode].Y), new Vector2(esnode.sheets[u.floor - 1].list[closestnode].X, esnode.sheets[u.floor - 1].list[closestnode].Y));
+    }
+
+    private float calcdistance(Vector2 p, Vector2 a, Vector2 b)
+    {
+        float _x = b.x - a.x;
+        float _y = b.y - a.y;
+        float _x2 = _x * _x;
+        float _y2 = _y * _y;
+        float r2 = _x2 + _y2;
+        float tt = -(_x * (a.x - p.x) + _y * (a.y - p.y));
+        if (tt < 0)
+        {
+            return (a.x - p.x) * (a.x - p.x) + (a.y - p.y) * (a.y - p.y);
+        }
+        if (tt > r2)
+        {
+            return (b.x - p.x) * (b.x - p.x) + (b.y - p.y) * (b.y - p.y);
+        }
+        float f1 = _x * (a.y - p.y) - _y * (a.x - p.x);
+        return f1 * f1 / r2;
+    }
+
+    private Vector2 nearest(Vector2 P, Vector2 A, Vector2 B)
+    {
+        Vector2 a, b;
+        float r;
+
+        a.x = B.x - A.x;
+        a.y = B.y - A.y;
+        b.x = P.x - A.x;
+        b.y = P.y - A.y;
+
+        // 内積 ÷ |a|^2
+        r = (a.x * b.x + a.y * b.y) / (a.x * a.x + a.y * a.y);
+
+        if (r <= 0)
+        {
+            return A;
+        }
+        else if (r >= 1)
+        {
+            return B;
+        }
+        else
+        {
+            Vector2 result;
+            result.x = A.x + r * a.x;
+            result.y = A.y + r * a.y;
+            return result;
+        }
+    }
+
 }
 
 class Node

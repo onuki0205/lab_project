@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class ReturnParameterSceneButton : MonoBehaviour
 {
-    public void OnClick() {
+    public void OnClick()
+    {
+        GameObject.Find("Canvas1").GetComponentInChildren<WalkcounterText>().setVisible(true);
         SceneManager.LoadScene("ParameterScene");
     }
 }

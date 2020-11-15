@@ -12,11 +12,12 @@ public class MapPlot : MonoBehaviour
     public RouteCalcurator rc;
 
     private LineRenderer locus = null;
+    private int floor;
     public Image m_img;
 
     private Entity_LabNode es;
-    private List<GameObject> Nodes = new List<GameObject>();
-    private List<Vector3> pos_v = new List<Vector3>();
+    public List<GameObject> Nodes;
+    private List<Vector3> pos_v;
 
     //private LineRenderer circle = null; // 円を描画するための LineRenderer
 
@@ -35,10 +36,14 @@ public class MapPlot : MonoBehaviour
         locus.startWidth = 1f;
         locus.endWidth = 1f;
 
+        Nodes = new List<GameObject>();
+        pos_v = new List<Vector3>();
+        floor = 1;
+
         //ユーザーの初期位置をセットしておく
-        AddNewPosition(new Vector2(-1.5f, 27.7f));
+        AddNewPosition(new Vector2(-1.8f, 23.7f));
         //エクセルに入力したノードの追加
-        LoadNodeList(2);
+        LoadNodeList(1);
         setVisible(false);
     }
 
@@ -81,10 +86,12 @@ public class MapPlot : MonoBehaviour
         {
             locus.positionCount = pos_v.Count;
             m_img.enabled = true;
-            for (int i = 0; i < Nodes.Count; i++)
-            {
-                Nodes[i].SetActive(true);
-            }
+            // for (int i = 0; i < Nodes.Count; i++)
+            // {
+            //     Nodes[i].SetActive(true);
+            // }
+
+            LoadNodeList(floor);
         }
         else
         {
@@ -92,8 +99,10 @@ public class MapPlot : MonoBehaviour
             m_img.enabled = false;
             for (int i = 0; i < Nodes.Count; i++)
             {
-                Nodes[i].SetActive(false);
+                GameObject.Destroy(Nodes[i]);
             }
+
+            Nodes.Clear();
         }
 
         PlotPosition();
