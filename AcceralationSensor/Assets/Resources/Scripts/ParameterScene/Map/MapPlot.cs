@@ -10,6 +10,8 @@ public class MapPlot : MonoBehaviour
     private GUIStyle labelStyle;
     private bool visible;
     public RouteCalcurator rc;
+    public Userstate user;
+    public GameObject userarrow;
 
     private LineRenderer locus = null;
     private int floor;
@@ -17,7 +19,7 @@ public class MapPlot : MonoBehaviour
 
     private Entity_LabNode es;
     public List<GameObject> Nodes;
-    private List<Vector3> pos_v;
+    public List<Vector3> pos_v;
 
     //private LineRenderer circle = null; // 円を描画するための LineRenderer
 
@@ -31,6 +33,7 @@ public class MapPlot : MonoBehaviour
 
         locus = gameObject.GetComponent<LineRenderer>();
         es = Resources.Load("Assets/Lab_NodeList") as Entity_LabNode;
+        userarrow = GameObject.Find("UserArrow");
 
         // 線の幅
         locus.startWidth = 1f;
@@ -40,18 +43,25 @@ public class MapPlot : MonoBehaviour
         pos_v = new List<Vector3>();
         floor = 1;
 
-        //ユーザーの初期位置をセットしておく
-        AddNewPosition(new Vector2(-1.8f, 23.7f));
         //エクセルに入力したノードの追加
         LoadNodeList(1);
         setVisible(false);
     }
 
+    private void Update()
+    {
+        if (visible == true)
+        {
+            userarrow.transform.localPosition = new Vector3(user.position.x * 20f, user.position.y * 20f, 0);
+            userarrow.transform.rotation = Quaternion.Euler(0, 0, 90 - user.direction);
+        }
+    }
+
     //ユーザーの座標更新
-    public void AddNewPosition(Vector2 newpos)
+    public void AddNewPosition()
     {
         //座標追加
-        pos_v.Add(new Vector3(newpos.x * 20f, newpos.y * 20f, 0));
+        pos_v.Add(new Vector3(user.position.x * 20f, user.position.y * 20f, 0));
         locus.positionCount++;
 
         //プロット
@@ -64,13 +74,11 @@ public class MapPlot : MonoBehaviour
     //ユーザーの座標をプロット
     private void PlotPosition()
     {
-        if (visible == true)
+        //座標セット
+        for (int i = 0; i < pos_v.Count; i++)
         {
-            //座標セット
-            for (int i = 0; i < pos_v.Count; i++)
-            {
-                locus.SetPosition(i, pos_v[i]);
-            }
+            locus.SetPosition(i, pos_v[i]);
+
         }
     }
 
@@ -86,17 +94,24 @@ public class MapPlot : MonoBehaviour
         {
             locus.positionCount = pos_v.Count;
             m_img.enabled = true;
+            userarrow.SetActive(true);
+
             // for (int i = 0; i < Nodes.Count; i++)
             // {
             //     Nodes[i].SetActive(true);
             // }
 
             LoadNodeList(floor);
+            if (floor == user.floor)
+            {
+                PlotPosition();
+            }
         }
         else
         {
             locus.positionCount = 0;
             m_img.enabled = false;
+            userarrow.SetActive(false);
             for (int i = 0; i < Nodes.Count; i++)
             {
                 GameObject.Destroy(Nodes[i]);
@@ -104,8 +119,6 @@ public class MapPlot : MonoBehaviour
 
             Nodes.Clear();
         }
-
-        PlotPosition();
     }
 
     //ノードを追加してマップ上に表示、IDも振る
@@ -119,10 +132,50 @@ public class MapPlot : MonoBehaviour
     //引数の階層のノードをエクセルからまとめてロード
     private void LoadNodeList(int floor)
     {
+        for (int i = 0; i < Nodes.Count; i++)
+        {
+            Destroy(Nodes[i]);
+        }
+        Nodes.Clear();
         floor--;
         for (int i = 0; i < es.sheets[floor].list.Count; i++)
         {
             addNewNode(es.sheets[floor].list[i].ID, new Vector2(es.sheets[floor].list[i].X, es.sheets[floor].list[i].Y));
+        }
+    }
+
+    public void changemapimage(int fl)
+    {
+        floor = fl;
+        switch (fl)
+        {
+            case 1:
+                this.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/Maps/Lab1F");
+                LoadNodeList(1);
+                rc.InitNodes(1);
+                break;
+            case 2:
+                this.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/Maps/Lab2F");
+                LoadNodeList(2);
+                rc.InitNodes(2);
+
+                break;
+            case 3:
+                this.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/Maps/Lab3F");
+                LoadNodeList(3);
+                rc.InitNodes(3);
+
+                break;
+        }
+        PlotPosition();
+        if (user.floor == fl)
+        {
+            userarrow.SetActive(true);
+        }
+        else
+        {
+            userarrow.SetActive(false);
+
         }
     }
 }

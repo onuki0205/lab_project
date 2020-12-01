@@ -76,7 +76,7 @@ public class SelectDestination : MonoBehaviour
                 break;
             //RightButton
             case 1:
-                if (page < count[floor-1] / groupnum)
+                if (page < count[floor - 1] / groupnum)
                 {
                     page++;
                     for (int i = 0; i < toggles.Count; i++)
@@ -101,10 +101,15 @@ public class SelectDestination : MonoBehaviour
             if (es.sheets[floor - 1].list[i].ID.CompareTo(destiID) == 0)
             {
                 desti = es.sheets[floor - 1].list[i];
-                break;
+                Userstate u = GameObject.Find("ValueSet").GetComponent<ValueSet>().user;
+                u.destination = desti;
+                u.route = rc.routecalclate(u);
+                this.GetComponentInParent<ButtonContoroller>().SelectedButton(7);
+                this.GetComponentInParent<ButtonContoroller>().SelectedButton(1);
+                return;
             }
+
         }
-        rc.routecalclate(desti);
     }
     public void ChangeFloor(int fl)
     {

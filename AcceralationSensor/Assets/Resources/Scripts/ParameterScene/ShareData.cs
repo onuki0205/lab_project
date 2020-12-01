@@ -12,7 +12,6 @@ public class ShareData : MonoBehaviour
         if (!created)
         {
             // this is the first instance -make it persist
-            Debug.Log(GameObject.FindGameObjectsWithTag("DontDestroyObj").Length);
             if (GameObject.FindGameObjectsWithTag("DontDestroyObj").Length > 1)
             {
                 Debug.Log("delete");

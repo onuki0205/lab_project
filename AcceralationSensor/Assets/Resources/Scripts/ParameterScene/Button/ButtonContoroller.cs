@@ -14,18 +14,24 @@ public class ButtonContoroller : MonoBehaviour
     private void Start()
     {
 
-        makeButton(new Vector2(Screen.width / 6, Screen.height / 20), 0, "Text");
-        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height / 20), 1, "Plot");
-        makeButton(new Vector2(Screen.width * 5 / 6, Screen.height / 20), 2, "AR");
-        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height * 3 / 20), 3, "Desti");
+        makeButton(new Vector2(Screen.width / 6, Screen.height / 20), 0, 0, "Text");
+        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height / 20), 1, 0, "Plot");
+        makeButton(new Vector2(Screen.width * 5 / 6, Screen.height / 20), 2, 0, "AR");
+        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height * 3 / 20), 3, 0, "Desti");
 
-        makeButton(new Vector2(Screen.width / 6, Screen.height * 3 / 20), 4, "Left");
-        makeButton(new Vector2(Screen.width * 5 / 6, Screen.height * 3 / 20), 5, "Right");
-        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height * 3 / 20), 6, "OK");
-        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height / 20), 7, "Cancel");
-        makeButton(new Vector2(Screen.width / 6, Screen.height * 5 / 20), 8, "1F");
-        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height * 5 / 20), 9, "2F");
-        makeButton(new Vector2(Screen.width * 5 / 6, Screen.height * 5 / 20), 10, "3F");
+        //selectDestination
+        makeButton(new Vector2(Screen.width / 6, Screen.height * 3 / 20), 4, 3, "Left");
+        makeButton(new Vector2(Screen.width * 5 / 6, Screen.height * 3 / 20), 5, 3, "Right");
+        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height * 3 / 20), 6, 3, "OK");
+        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height / 20), 7, 3, "Cancel");
+        makeButton(new Vector2(Screen.width / 6, Screen.height * 5 / 20), 8, 3, "1F");
+        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height * 5 / 20), 9, 3, "2F");
+        makeButton(new Vector2(Screen.width * 5 / 6, Screen.height * 5 / 20), 10, 3, "3F");
+
+        //mapplot
+        makeButton(new Vector2(Screen.width / 6, Screen.height * 5 / 20), 11, 2, "1F,");
+        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height * 5 / 20), 12, 2, "2F,");
+        makeButton(new Vector2(Screen.width * 5 / 6, Screen.height * 5 / 20), 13, 2, "3F,");
 
         for (int i = 0; i < blist.Count; i++)
         {
@@ -53,25 +59,28 @@ public class ButtonContoroller : MonoBehaviour
         {
             //TextButton
             case 0:
-                c.GetComponentInChildren<WalkcounterText>().setVisible(true);
+                c.GetComponentInChildren<ValueSet>().setVisible(true);
                 c.GetComponentInChildren<MapPlot>().setVisible(false);
                 this.GetComponentInChildren<SelectDestination>().setVisible(false);
 
                 cam.GetComponentInChildren<CameraController>().setFrozen(true);
+                setbuttongroupstate(2, false);
 
 
                 break;
             //PlotButton
             case 1:
-                c.GetComponentInChildren<WalkcounterText>().setVisible(false);
+                c.GetComponentInChildren<ValueSet>().setVisible(false);
                 c.GetComponentInChildren<MapPlot>().setVisible(true);
                 this.GetComponentInChildren<SelectDestination>().setVisible(false);
 
                 cam.GetComponentInChildren<CameraController>().setFrozen(false);
+                setbuttongroupstate(2, true);
+
                 break;
             //ARButton
             case 2:
-                c.GetComponentInChildren<WalkcounterText>().setVisible(false);
+                c.GetComponentInChildren<ValueSet>().setVisible(false);
                 c.GetComponentInChildren<MapPlot>().setVisible(false);
                 this.GetComponentInChildren<SelectDestination>().setVisible(false);
                 cam.GetComponentInChildren<CameraController>().setFrozen(false);
@@ -80,19 +89,11 @@ public class ButtonContoroller : MonoBehaviour
                 break;
             //selectdestinationButtton
             case 3:
-                for (int i = 0; i < blist.Count; i++)
-                {
-                    if (blist[i].GetComponent<BaseButton>().buttontype >= 4 && blist[i].GetComponent<BaseButton>().buttontype <= 10)
-                    {
-                        blist[i].gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        blist[i].gameObject.SetActive(false);
-                    }
-                }
+                setbuttongroupstate(3, true);
+                setbuttongroupstate(2, false);
+                setbuttongroupstate(0, false);
 
-                c.GetComponentInChildren<WalkcounterText>().setVisible(false);
+                c.GetComponentInChildren<ValueSet>().setVisible(false);
                 c.GetComponentInChildren<MapPlot>().setVisible(false);
                 this.GetComponentInChildren<SelectDestination>().setVisible(true);
 
@@ -112,19 +113,11 @@ public class ButtonContoroller : MonoBehaviour
                 break;
             //目的地設定画面　CancelButton
             case 7:
-                for (int i = 0; i < blist.Count; i++)
-                {
-                    if (blist[i].GetComponent<BaseButton>().buttontype < 4)
-                    {
-                        blist[i].gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        blist[i].gameObject.SetActive(false);
-                    }
-                }
+                setbuttongroupstate(3, false);
+                setbuttongroupstate(2, false);
+                setbuttongroupstate(0, true);
 
-                c.GetComponentInChildren<WalkcounterText>().setVisible(true);
+                c.GetComponentInChildren<ValueSet>().setVisible(true);
                 c.GetComponentInChildren<MapPlot>().setVisible(false);
                 this.GetComponentInChildren<SelectDestination>().setVisible(false);
 
@@ -143,17 +136,41 @@ public class ButtonContoroller : MonoBehaviour
             case 10:
                 sd.ChangeFloor(3);
                 break;
+            //mapplot 1F
+            case 11:
+                GameObject.Find("MapPlot").GetComponent<MapPlot>().changemapimage(1);
+                break;
+            //mapplot 2F
+            case 12:
+                GameObject.Find("MapPlot").GetComponent<MapPlot>().changemapimage(2);
+                break;
+            //mapplot 3F
+            case 13:
+                GameObject.Find("MapPlot").GetComponent<MapPlot>().changemapimage(3);
+                break;
             default:
                 break;
         }
     }
 
-    public void makeButton(Vector2 pos, int type, string tex)
+    private void makeButton(Vector2 pos, int type, int group, string tex)
     {
         GameObject b = Instantiate(Resources.Load("Prehabs/BaseButton") as GameObject, new Vector3(pos.x, pos.y, 0f), Quaternion.identity);
         b.transform.parent = this.transform;
         b.GetComponentInChildren<Text>().text = tex;
         b.GetComponent<BaseButton>().buttontype = type;
+        b.GetComponent<BaseButton>().buttongroup = group;
         blist.Add(b);
+    }
+
+    private void setbuttongroupstate(int group, bool show)
+    {
+        for (int i = 0; i < blist.Count; i++)
+        {
+            if (blist[i].GetComponent<BaseButton>().buttongroup == group)
+            {
+                blist[i].gameObject.SetActive(show);
+            }
+        }
     }
 }
