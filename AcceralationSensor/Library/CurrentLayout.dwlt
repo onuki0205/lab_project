@@ -21,7 +21,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 6}
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 398}
   m_MaxSize: {x: 10000, y: 10000}
   m_Maximized: 0
 --- !u!114 &2
@@ -43,14 +43,14 @@ MonoBehaviour:
     y: 429
     width: 1012
     height: 282
-  m_MinSize: {x: 104, y: 124}
-  m_MaxSize: {x: 4004, y: 4024}
-  m_ActualView: {fileID: 13}
+  m_MinSize: {x: 234, y: 274}
+  m_MaxSize: {x: 10004, y: 10024}
+  m_ActualView: {fileID: 12}
   m_Panes:
   - {fileID: 13}
   - {fileID: 12}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -72,8 +72,8 @@ MonoBehaviour:
     y: 0
     width: 1012
     height: 711
-  m_MinSize: {x: 279, y: 198}
-  m_MaxSize: {x: 4004, y: 8048}
+  m_MinSize: {x: 279, y: 348}
+  m_MaxSize: {x: 10004, y: 14048}
   vertical: 1
   controlID: 36
 --- !u!114 &4
@@ -96,8 +96,8 @@ MonoBehaviour:
     y: 30
     width: 1276
     height: 711
-  m_MinSize: {x: 481, y: 224}
-  m_MaxSize: {x: 8006, y: 8048}
+  m_MinSize: {x: 479, y: 348}
+  m_MaxSize: {x: 14004, y: 14048}
   vertical: 0
   controlID: 34
 --- !u!114 &5
@@ -119,8 +119,8 @@ MonoBehaviour:
     y: 0
     width: 264
     height: 711
-  m_MinSize: {x: 202, y: 224}
-  m_MaxSize: {x: 4002, y: 4024}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -148,7 +148,7 @@ MonoBehaviour:
     y: 0
     width: 1276
     height: 761
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 398}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &7
 MonoBehaviour:
@@ -214,8 +214,8 @@ MonoBehaviour:
     y: 0
     width: 1276
     height: 711
-  m_MinSize: {x: 481, y: 224}
-  m_MaxSize: {x: 8006, y: 8048}
+  m_MinSize: {x: 479, y: 348}
+  m_MaxSize: {x: 14004, y: 14048}
   vertical: 0
   controlID: 35
 --- !u!114 &10
@@ -319,20 +319,20 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Resources/Excel
+    - Assets/Resources/Scripts/ParameterScene/Sensor
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Resources/Excel
+  - Assets/Resources/Scripts/ParameterScene/Sensor
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\myPC\Desktop\lab\project\AcceralationSensor
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: 162b0000
-    m_LastClickedID: 11030
-    m_ExpandedIDs: 0000000056280000a6280000ca280000d6280000fc280000042a00000c2b0000382b0000502b0000542b000000ca9a3b
+    scrollPos: {x: 0, y: 91}
+    m_SelectedIDs: 3c2a0000
+    m_LastClickedID: 10812
+    m_ExpandedIDs: 0000000058280000a8280000cc280000d8280000fe280000062a00000e2b00003a2b0000522b0000562b000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -360,7 +360,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000056280000a6280000ca280000d6280000fc280000042a00000c2b0000382b0000502b0000542b0000
+    m_ExpandedIDs: 0000000058280000a8280000cc280000d8280000fe280000062a00000e2b00003a2b0000522b0000562b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -385,24 +385,24 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 08220100
-    m_LastClickedInstanceID: 74248
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: f82b0000000000001c2a0000e2220000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: MoveStairButton
-      m_OriginalName: MoveStairButton
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 73714
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 2}
     m_CreateAssetUtility:
@@ -470,9 +470,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 02220100
-      m_LastClickedID: 74242
-      m_ExpandedIDs: 7096ebffe096ebff78b2ebffe2b2ebff90eaebffb2eaebffdaeaebff1ceeebff80eeebfffafaefff30d8f0ffb0d9f0ff14a6feff82d1feffdefbfffff4ffffff982b0000ac2b0000be2b0000ee2b00003ade0000d6df000046ed00008e1f0100d62101000822010052220100b22401003025010078260100f6260100
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: bad5ffffccd5ffff32d8ffff36d8ffff7ef5ffff90f5fffffaf7ffff02f8ffffc0f8ffffd2f8ffff3cfbffff40fbffffdefbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 

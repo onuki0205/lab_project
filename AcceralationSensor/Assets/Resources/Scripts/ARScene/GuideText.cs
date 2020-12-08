@@ -21,11 +21,14 @@ public class GuideText : MonoBehaviour
 
     private void Update()
     {
-        if (user.route.Count >= 3)
+        if (user.route != null)
         {
-            if (user.route[1] < 0)
+            if (user.route.Count >= 3)
             {
-                moveStairButton.gameObject.SetActive(true);
+                if (user.route[1] < 0)
+                {
+                    moveStairButton.gameObject.SetActive(true);
+                }
             }
         }
     }
@@ -45,14 +48,17 @@ public class GuideText : MonoBehaviour
             {
                 string text = string.Empty;
                 this.labelStyle.fontSize = Screen.height / 30;
-                x = Screen.width / 20;
                 y = Screen.height / 20;
                 text = string.Format("目的地:\n" + user.destination.Name);
                 GUI.Label(new Rect(x, y, w, h), text, this.labelStyle);
 
+                y = Screen.height *3/ 20;
+                text = string.Format("距離:約" + Mathf.Round(user.distance) + "m");
+                GUI.Label(new Rect(x, y, w, h), text, this.labelStyle);
+
                 this.labelStyle.fontSize = Screen.height / 22;
                 x = Screen.width / 20 * 3;
-                y = Screen.height * 12 / 20;
+                y = Screen.height * 11 / 20;
 
 
                 if (user.route.Count == 1)
@@ -67,7 +73,8 @@ public class GuideText : MonoBehaviour
                     }
                     else
                     {
-                        text = string.Format("階段で{0}Fに\n移動してください。", -user.route[1]);
+                        x = Screen.width / 20 * 1;
+                        text = string.Format("階段で{0}Fに\n移動してください。\n移動後、Doneボタンを\n押してください", -user.route[1]);
                     }
                 }
 

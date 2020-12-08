@@ -8,6 +8,6 @@ public class ReturnParameterSceneButton : MonoBehaviour
     public void OnClick()
     {
         GameObject.Find("Canvas1").GetComponentInChildren<ValueSet>().setVisible(true);
-        SceneManager.LoadScene("ParameterScene");
+        SceneManager.LoadScene("MainScene");
     }
 }

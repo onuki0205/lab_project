@@ -392,23 +392,23 @@ MonoBehaviour:
     - ID: 21
       X: -51.5
       Y: 27.7
-      connectID: 15,26
+      connectID: 15,27
     - ID: 22
       X: -1.5
       Y: 27.7
-      connectID: 16,27
+      connectID: 16,28
     - ID: 23
       X: 6.2
       Y: 27.7
-      connectID: 17,27
+      connectID: 17,29
     - ID: 24
       X: 56.2
       Y: 27.7
-      connectID: 18,28
+      connectID: 18,30
     - ID: 25
       X: 64
       Y: 27.7
-      connectID: 19,28
+      connectID: 19,31
     - ID: 26
       X: -59.3
       Y: 17.7

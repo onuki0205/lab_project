@@ -18,7 +18,7 @@ using Vuforia;
 public class Marker_test : MonoBehaviour, ITrackableEventHandler
 {
     #region PROTECTED_MEMBER_VARIABLES
-    public ValueSet wtex;
+    public ValueSet valset;
 
     protected TrackableBehaviour mTrackableBehaviour;
     protected TrackableBehaviour.Status m_PreviousStatus;
@@ -33,6 +33,8 @@ public class Marker_test : MonoBehaviour, ITrackableEventHandler
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
         if (mTrackableBehaviour)
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
+
+            valset = GameObject.Find("ValueSet").GetComponent<ValueSet>();
     }
 
     protected virtual void OnDestroy()
@@ -105,7 +107,7 @@ public class Marker_test : MonoBehaviour, ITrackableEventHandler
                 component.enabled = true;
         }
 
-        wtex.user.position = new Vector2(20, 30);
+        valset.user.position = new Vector2(20, 30);
     }
 
 
