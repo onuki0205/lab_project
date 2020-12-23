@@ -17,7 +17,7 @@ public class ShareData : MonoBehaviour
                 Debug.Log("delete");
                 Destroy(this.gameObject);
 
-                GameObject.FindWithTag("FixedCanvas").GetComponent<ButtonContoroller>().setCanvas();
+                GameObject.FindWithTag("FixedCanvas").GetComponent<MainButtonController>().setCanvas();
             }
             DontDestroyOnLoad(this);
             created = true;

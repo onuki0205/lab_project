@@ -34,7 +34,11 @@ public class Marker_test : MonoBehaviour, ITrackableEventHandler
         if (mTrackableBehaviour)
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
 
-            valset = GameObject.Find("ValueSet").GetComponent<ValueSet>();
+        GameObject g = GameObject.Find("ValueSet");
+        if (g != null)
+        {
+            valset = g.GetComponent<ValueSet>();
+        }
     }
 
     protected virtual void OnDestroy()
@@ -107,7 +111,8 @@ public class Marker_test : MonoBehaviour, ITrackableEventHandler
                 component.enabled = true;
         }
 
-        valset.user.position = new Vector2(20, 30);
+        valset.user.position = new Vector2(-1.5f, 27.7f);
+        valset.user.floor = 1;
     }
 
 

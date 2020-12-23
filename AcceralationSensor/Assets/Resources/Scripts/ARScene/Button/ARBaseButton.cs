@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class BaseButton : MonoBehaviour
+public class ARBaseButton : MonoBehaviour
 {
+    // Start is called before the first frame update
     public int buttontype;
     public int buttongroup;
     public void OnClick()
     {
-        this.GetComponentInParent<ButtonContoroller>().SelectedButton(buttontype);
+        this.GetComponentInParent<ARButtonController>().SelectedButton(buttontype);
     }
 }

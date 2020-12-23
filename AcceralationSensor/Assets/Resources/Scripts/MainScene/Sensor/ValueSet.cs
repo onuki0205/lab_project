@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.IO;
 
 /**
  * メモ
- * 
- * ・三角関数の計算は弧度法(radian)で行われるので
+ *
+ * ・三角関数の計算は弧度法(radian)で行われるため
  * 　度数法(degree)での値を使うときはMathf.Deg2Radで直す
  **/
 
@@ -57,7 +59,6 @@ public class ValueSet : MonoBehaviour
 
     //距離計測用
     private float height = 170;
-    private float stride = 170 * 0.45f;//cm
     public Userstate user;
 
     //TestCompass
@@ -67,7 +68,6 @@ public class ValueSet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
 
         //フォント生成
         this.labelStyle = new GUIStyle();
@@ -84,8 +84,10 @@ public class ValueSet : MonoBehaviour
 
         //InitStepDitection();
         user = new Userstate(new Vector2(-1.5f, 27.7f), 0, 1);
+        //user = new Userstate(Vector2.zero, 0, 1);
         rc.InitNodes(user.floor);
         user.closestnode = rc.calcclosestnode(user);
+        setVisible(false);
 
     }
 
@@ -109,13 +111,18 @@ public class ValueSet : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             user.direction -= 1;
-            Debug.Log("1");
+            if (user.direction < 0)
+            {
+                user.direction += 360;
+            }
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
             user.direction += 1;
-            Debug.Log("2");
-
+            if (user.direction > 360)
+            {
+                user.direction -= 360;
+            }
         }
 
         if (Input.GetKey(KeyCode.UpArrow))
@@ -125,7 +132,6 @@ public class ValueSet : MonoBehaviour
                 step++;
                 CalcDistance();
                 d_wflag = true;
-                Debug.Log("3");
             }
         }
         else
@@ -133,9 +139,10 @@ public class ValueSet : MonoBehaviour
             d_wflag = false;
         }
 #else
-        TestCompass();
-#endif
+        // TestCompass();
+        user.direction = Input.compass.magneticHeading;
 
+#endif
     }
 
     void OnGUI()
@@ -187,11 +194,11 @@ public class ValueSet : MonoBehaviour
                         case 9:
                             text = string.Format("acc:{0}", acc);
                             break;
-                        case 10:
-                            text = string.Format("Scompass:{0}", System.Math.Round(Input.compass.magneticHeading, digit));
-                            break;
+                        // case 10:
+                        //     text = string.Format("Scompass:{0}", System.Math.Round(Input.compass.magneticHeading, digit));
+                        //     break;
                         case 11:
-                            text = string.Format("compass:{0}", System.Math.Round(user.direction, digit));
+                            text = string.Format("direction:{0}", System.Math.Round(user.direction, digit));
                             break;
                         case 12:
                             text = string.Format("Step:{0}", step);
@@ -283,40 +290,40 @@ public class ValueSet : MonoBehaviour
     //     compass = (270f + Mathf.Atan2(_y, _x) * Mathf.Rad2Deg) % 360;     //地磁気ベクトルから計算(傾き補正あり)
     // }
 
-    public void TestCompass()
-    {
-        Vector3 Vao = new Vector3(0.0372f, 0.0510f, -0.9412f);
-        Vector3 Va = new Vector3(gravity.x, gravity.y, gravity.z);
+    // public void TestCompass()
+    // {
+    //     Vector3 Vao = new Vector3(0.0372f, 0.0510f, -0.9412f);
+    //     Vector3 Va = new Vector3(gravity.x, gravity.y, gravity.z);
 
-        float alpha = -Mathf.Acos(Vector3.Dot(Va, Vao) / (Va.magnitude * Vao.magnitude));
-        Vector3 Vcro = Vector3.Cross(Va, Vao);
-        Vector3 n = Vcro / Vcro.magnitude;
+    //     float alpha = -Mathf.Acos(Vector3.Dot(Va, Vao) / (Va.magnitude * Vao.magnitude));
+    //     Vector3 Vcro = Vector3.Cross(Va, Vao);
+    //     Vector3 n = Vcro / Vcro.magnitude;
 
-        float[,] mat = new float[3, 3];
-        float tmp = 1 - Mathf.Cos(alpha);
+    //     float[,] mat = new float[3, 3];
+    //     float tmp = 1 - Mathf.Cos(alpha);
 
-        mat[0, 0] = n.x * n.x * tmp + Mathf.Cos(alpha);
-        mat[0, 1] = n.x * n.y * tmp + n.z * Mathf.Sin(alpha);
-        mat[0, 2] = n.x * n.z * tmp + n.y * Mathf.Sin(alpha);
-        mat[1, 0] = n.y * n.x * tmp + n.z * Mathf.Sin(alpha);
-        mat[1, 1] = n.y * n.y * tmp + Mathf.Cos(alpha);
-        mat[1, 2] = n.y * n.z * tmp + n.x * Mathf.Sin(alpha);
-        mat[2, 0] = n.z * n.x * tmp + n.y * Mathf.Sin(alpha);
-        mat[2, 1] = n.z * n.y * tmp + n.x * Mathf.Sin(alpha);
-        mat[2, 2] = n.z * n.z * tmp + Mathf.Cos(alpha);
+    //     mat[0, 0] = n.x * n.x * tmp + Mathf.Cos(alpha);
+    //     mat[0, 1] = n.x * n.y * tmp + n.z * Mathf.Sin(alpha);
+    //     mat[0, 2] = n.x * n.z * tmp + n.y * Mathf.Sin(alpha);
+    //     mat[1, 0] = n.y * n.x * tmp + n.z * Mathf.Sin(alpha);
+    //     mat[1, 1] = n.y * n.y * tmp + Mathf.Cos(alpha);
+    //     mat[1, 2] = n.y * n.z * tmp + n.x * Mathf.Sin(alpha);
+    //     mat[2, 0] = n.z * n.x * tmp + n.y * Mathf.Sin(alpha);
+    //     mat[2, 1] = n.z * n.y * tmp + n.x * Mathf.Sin(alpha);
+    //     mat[2, 2] = n.z * n.z * tmp + Mathf.Cos(alpha);
 
-        H = Vector3.zero;
+    //     H = Vector3.zero;
 
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                H[i] += mat[i, j] * Input.compass.rawVector[j];
-            }
-        }
+    //     for (int i = 0; i < 3; i++)
+    //     {
+    //         for (int j = 0; j < 3; j++)
+    //         {
+    //             H[i] += mat[i, j] * Input.compass.rawVector[j];
+    //         }
+    //     }
 
-        user.direction = (270f + Mathf.Atan2(H.y, H.x) * Mathf.Rad2Deg) % 360;     //地磁気ベクトルから計算(傾き補正あり)
-    }
+    //     user.direction = (270f + Mathf.Atan2(H.y, H.x) * Mathf.Rad2Deg) % 360;     //地磁気ベクトルから計算(傾き補正あり)
+    // }
 
     //StepDitectionで使う変数を初期化
     // private void InitStepDitection()
@@ -436,19 +443,24 @@ public class ValueSet : MonoBehaviour
     private void CalcDistance()
     {
         float compass_offset = 180;
+        float revision = 1.00f;
 
-        float _x = 1.1f * stride * Mathf.Cos(Mathf.Deg2Rad * (user.direction + compass_offset)) / 100;
-        float _y = 1.1f * stride * Mathf.Sin(Mathf.Deg2Rad * (user.direction + compass_offset)) / 100;
+        float dir = rc.correctdirection(user);
+        //float dir = user.direction;
+
+        float _x = revision * user.stride * Mathf.Cos(Mathf.Deg2Rad * (dir + compass_offset)) / 100;
+        float _y = revision * user.stride * Mathf.Sin(Mathf.Deg2Rad * (dir + compass_offset)) / 100;
 
         user.position += new Vector2(_x, -_y);
 
-        user.closestnode = rc.calcclosestnode(user);
         if (step % 3 == 2)
         {
             user.position = rc.correctposition(user);
         }
 
+        user.closestnode = rc.calcclosestnode(user);
         mapplot.AddNewPosition();
+
         if (user.destination != null)
         {
             user.route = rc.routecalclate(user);
@@ -470,6 +482,7 @@ public class Userstate
     public Entity_LabRoom.Param destination { get; set; }
     public List<int> route { get; set; }
     public float distance { get; set; }
+    public float stride { get; set; }
 
     public Userstate()
     {
@@ -485,5 +498,6 @@ public class Userstate
         destination = null;
         route = null;
         distance = -1;
+        stride = 170 * 0.45f;//cm
     }
 }

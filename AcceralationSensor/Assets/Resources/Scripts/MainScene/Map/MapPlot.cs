@@ -34,6 +34,7 @@ public class MapPlot : MonoBehaviour
         locus = gameObject.GetComponent<LineRenderer>();
         es = Resources.Load("Assets/Lab_NodeList") as Entity_LabNode;
         userarrow = GameObject.Find("UserArrow");
+        user = GameObject.Find("ValueSet").GetComponent<ValueSet>().user;
 
         // 線の幅
         locus.startWidth = 1f;
@@ -45,15 +46,26 @@ public class MapPlot : MonoBehaviour
 
         //エクセルに入力したノードの追加
         LoadNodeList(1);
-        setVisible(false);
+        setVisible(true);
     }
 
     private void Update()
     {
         if (visible == true)
         {
-            userarrow.transform.localPosition = new Vector3(user.position.x * 20f, user.position.y * 20f, 0);
-            userarrow.transform.rotation = Quaternion.Euler(0, 0, 90 - user.direction);
+            if (user != null)
+            {
+                if (user.position == Vector2.zero)
+                {
+                    userarrow.SetActive(false);
+                }
+                else
+                {
+                    userarrow.SetActive(true);
+                }
+                userarrow.transform.localPosition = new Vector3(user.position.x * 20f, user.position.y * 20f, 0);
+                userarrow.transform.rotation = Quaternion.Euler(0, 0, 90 - (user.direction+10));
+            }
         }
     }
 
@@ -165,15 +177,18 @@ public class MapPlot : MonoBehaviour
                 break;
         }
         PlotPosition();
-        if (user.floor == fl)
+        if (user != null)
         {
-            userarrow.SetActive(true);
-            locus.enabled = true;
-        }
-        else
-        {
-            userarrow.SetActive(false);
-            locus.enabled = false;
+            if (user.floor == fl)
+            {
+                userarrow.SetActive(true);
+                locus.enabled = true;
+            }
+            else
+            {
+                userarrow.SetActive(false);
+                locus.enabled = false;
+            }
         }
     }
 }

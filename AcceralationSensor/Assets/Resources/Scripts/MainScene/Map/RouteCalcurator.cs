@@ -227,6 +227,47 @@ public class RouteCalcurator : MonoBehaviour
 
         //Debug.Log(u.closestnode + "   " + closestnode);
         return nearest(u.position, new Vector2(esnode.sheets[u.floor - 1].list[u.closestnode].X, esnode.sheets[u.floor - 1].list[u.closestnode].Y), new Vector2(esnode.sheets[u.floor - 1].list[closestnode].X, esnode.sheets[u.floor - 1].list[closestnode].Y));
+    }
+
+    public float correctdirection(Userstate u)
+    {
+        Vector2 clonodepos = new Vector2(esnode.sheets[u.floor - 1].list[u.closestnode].X, esnode.sheets[u.floor - 1].list[u.closestnode].Y);
+        float clodir = u.direction + 10;
+        float diff = float.PositiveInfinity;
+
+        List<int> li = nodes[u.closestnode].getconnectlist();
+        Debug.Log(u.direction);
+        for (int i = 0; i < li.Count; i++)
+        {
+            Vector2 tmppos = new Vector2(esnode.sheets[u.floor - 1].list[li[i]].X, esnode.sheets[u.floor - 1].list[li[i]].Y);
+            float tmpang = getAngle(clonodepos, tmppos);
+            float tmpdiff = Mathf.Abs(Mathf.Cos(u.direction * Mathf.Deg2Rad) - Mathf.Cos(tmpang * Mathf.Deg2Rad)) + Mathf.Abs(Mathf.Sin(u.direction * Mathf.Deg2Rad) - Mathf.Sin(tmpang * Mathf.Deg2Rad));
+            if (calcdistance(u.position, clonodepos, tmppos) > 3.0f) continue;
+
+            if (tmpdiff < diff)
+            {
+                clodir = tmpang;
+                diff = tmpdiff;
+            }
+            tmpang = (tmpang + 180) % 360;
+            tmpdiff = Mathf.Abs(Mathf.Cos(u.direction * Mathf.Deg2Rad) - Mathf.Cos(tmpang * Mathf.Deg2Rad)) + Mathf.Abs(Mathf.Sin(u.direction * Mathf.Deg2Rad) - Mathf.Sin(tmpang * Mathf.Deg2Rad));
+
+            if (tmpdiff < diff)
+            {
+                clodir = tmpang;
+                diff = tmpdiff;
+            }
+        }
+
+        Debug.Log("clo:  " + clodir);
+        if (Mathf.Min(Mathf.Abs(clodir - (u.direction + 10)), Mathf.Abs(clodir - (u.direction + 10 + 360))) < 30)
+        {
+            return clodir;
+        }
+        else
+        {
+            return u.direction + 10;
+        }
 
     }
 
@@ -253,9 +294,13 @@ public class RouteCalcurator : MonoBehaviour
     float getAngle(Vector2 start, Vector2 target)
     {
         Vector2 dt = target - start;
-        float rad = Mathf.Atan2(-dt.y, dt.x);
-        float degree = rad * Mathf.Rad2Deg;
+        float rad = Mathf.Atan2(dt.x, dt.y);
+        float degree = rad * Mathf.Rad2Deg + 90;
 
+        if (degree < 0)
+        {
+            degree += 360;
+        }
         return degree;
     }
 

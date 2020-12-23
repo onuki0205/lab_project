@@ -104,8 +104,8 @@ public class SelectDestination : MonoBehaviour
                 Userstate u = GameObject.Find("ValueSet").GetComponent<ValueSet>().user;
                 u.destination = desti;
                 u.route = rc.routecalclate(u);
-                this.GetComponentInParent<ButtonContoroller>().SelectedButton(7);
-                this.GetComponentInParent<ButtonContoroller>().SelectedButton(2);
+                this.GetComponentInParent<MainButtonController>().SelectedButton(7);
+                this.GetComponentInParent<MainButtonController>().SelectedButton(2);
                 return;
             }
 

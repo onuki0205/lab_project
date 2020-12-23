@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class ButtonContoroller : MonoBehaviour
+public class MainButtonController : MonoBehaviour
 {
     public Canvas c;
     public Camera cam;
@@ -14,28 +14,30 @@ public class ButtonContoroller : MonoBehaviour
     private void Start()
     {
 
-        makeButton(new Vector2(Screen.width / 6, Screen.height / 20), 0, 0, "Text");
-        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height / 20), 1, 0, "Plot");
+        //makeButton(new Vector2(Screen.width * 3 / 6, Screen.height * 5/ 20), 0, 0, "Text");
+        makeButton(new Vector2(Screen.width / 6, Screen.height / 20), 1, 0, "Map");
         makeButton(new Vector2(Screen.width * 5 / 6, Screen.height / 20), 2, 0, "AR");
-        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height * 3 / 20), 3, 0, "Desti");
-
-        //selectDestination
-        makeButton(new Vector2(Screen.width / 6, Screen.height * 3 / 20), 4, 3, "Left");
-        makeButton(new Vector2(Screen.width * 5 / 6, Screen.height * 3 / 20), 5, 3, "Right");
-        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height * 3 / 20), 6, 3, "OK");
-        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height / 20), 7, 3, "Cancel");
-        makeButton(new Vector2(Screen.width / 6, Screen.height * 5 / 20), 8, 3, "1F");
-        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height * 5 / 20), 9, 3, "2F");
-        makeButton(new Vector2(Screen.width * 5 / 6, Screen.height * 5 / 20), 10, 3, "3F");
+        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height / 20), 3, 0, "Desti");
 
         //mapplot
-        makeButton(new Vector2(Screen.width / 6, Screen.height * 5 / 20), 11, 2, "1F,");
-        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height * 5 / 20), 12, 2, "2F,");
-        makeButton(new Vector2(Screen.width * 5 / 6, Screen.height * 5 / 20), 13, 2, "3F,");
+        makeButton(new Vector2(Screen.width / 6, Screen.height * 3 / 20), 11, 1, "1F");
+        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height * 3 / 20), 12, 1, "2F");
+        makeButton(new Vector2(Screen.width * 5 / 6, Screen.height * 3 / 20), 13, 1, "3F");
+
+        //selectDestination
+        makeButton(new Vector2(Screen.width / 6, Screen.height * 3 / 20), 4, 2, "Left");
+        makeButton(new Vector2(Screen.width * 5 / 6, Screen.height * 3 / 20), 5, 2, "Right");
+        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height * 3 / 20), 6, 2, "OK");
+        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height / 20), 7, 2, "Cancel");
+        makeButton(new Vector2(Screen.width / 6, Screen.height * 5 / 20), 8, 2, "1F");
+        makeButton(new Vector2(Screen.width * 3 / 6, Screen.height * 5 / 20), 9, 2, "2F");
+        makeButton(new Vector2(Screen.width * 5 / 6, Screen.height * 5 / 20), 10, 2, "3F");
+
+
 
         for (int i = 0; i < blist.Count; i++)
         {
-            if (blist[i].GetComponent<BaseButton>().buttontype < 4)
+            if (blist[i].GetComponent<MainBaseButton>().buttongroup < 2)
             {
                 blist[i].gameObject.SetActive(true);
             }
@@ -68,14 +70,14 @@ public class ButtonContoroller : MonoBehaviour
 
 
                 break;
-            //PlotButton
+            //MapButton
             case 1:
                 c.GetComponentInChildren<ValueSet>().setVisible(false);
                 c.GetComponentInChildren<MapPlot>().setVisible(true);
                 this.GetComponentInChildren<SelectDestination>().setVisible(false);
 
                 cam.GetComponentInChildren<CameraController>().setFrozen(false);
-                setbuttongroupstate(2, true);
+                setbuttongroupstate(1, true);
 
                 break;
             //ARButton
@@ -89,8 +91,8 @@ public class ButtonContoroller : MonoBehaviour
                 break;
             //selectdestinationButtton
             case 3:
-                setbuttongroupstate(3, true);
-                setbuttongroupstate(2, false);
+                setbuttongroupstate(2, true);
+                setbuttongroupstate(1, false);
                 setbuttongroupstate(0, false);
 
                 c.GetComponentInChildren<ValueSet>().setVisible(false);
@@ -113,15 +115,15 @@ public class ButtonContoroller : MonoBehaviour
                 break;
             //目的地設定画面　CancelButton
             case 7:
-                setbuttongroupstate(3, false);
                 setbuttongroupstate(2, false);
+                setbuttongroupstate(1, true);
                 setbuttongroupstate(0, true);
 
-                c.GetComponentInChildren<ValueSet>().setVisible(true);
-                c.GetComponentInChildren<MapPlot>().setVisible(false);
+                c.GetComponentInChildren<ValueSet>().setVisible(false);
+                c.GetComponentInChildren<MapPlot>().setVisible(true);
                 this.GetComponentInChildren<SelectDestination>().setVisible(false);
 
-                cam.GetComponentInChildren<CameraController>().setFrozen(true);
+                cam.GetComponentInChildren<CameraController>().setFrozen(false);
                 break;
             //目的地選択画面 1FButton
             case 8:
@@ -153,21 +155,23 @@ public class ButtonContoroller : MonoBehaviour
         }
     }
 
-    private void makeButton(Vector2 pos, int type, int group, string tex)
+    private GameObject makeButton(Vector2 pos, int type, int group, string tex)
     {
         GameObject b = Instantiate(Resources.Load("Prehabs/BaseButton") as GameObject, new Vector3(pos.x, pos.y, 0f), Quaternion.identity);
         b.transform.parent = this.transform;
         b.GetComponentInChildren<Text>().text = tex;
-        b.GetComponent<BaseButton>().buttontype = type;
-        b.GetComponent<BaseButton>().buttongroup = group;
+        b.GetComponent<MainBaseButton>().buttontype = type;
+        b.GetComponent<MainBaseButton>().buttongroup = group;
         blist.Add(b);
+
+        return b;
     }
 
     private void setbuttongroupstate(int group, bool show)
     {
         for (int i = 0; i < blist.Count; i++)
         {
-            if (blist[i].GetComponent<BaseButton>().buttongroup == group)
+            if (blist[i].GetComponent<MainBaseButton>().buttongroup == group)
             {
                 blist[i].gameObject.SetActive(show);
             }

@@ -9,16 +9,33 @@ public class ArrowContoroller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        user = GameObject.Find("ValueSet").GetComponent<ValueSet>().user;
+        GameObject g = GameObject.Find("ValueSet");
+        if (g != null)
+        {
+            user = g.GetComponent<ValueSet>().user;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (user != null && user.route != null)
+        if (user != null)
         {
-            SetArrowDirection();
+            if (user.route != null)
+            {
+                GameObject.Find("DestinationDirectionArrow").SetActive(true);
+                SetArrowDirection();
+            }
+            else
+            {
+                GameObject.Find("DestinationDirectionArrow").SetActive(false);
+            }
         }
+        else
+        {
+            GameObject.Find("DestinationDirectionArrow").SetActive(false);
+        }
+
     }
 
     void SetArrowDirection()
@@ -45,6 +62,6 @@ public class ArrowContoroller : MonoBehaviour
         }
         degree += 90;
 
-        this.transform.rotation = Quaternion.Euler(60, user.direction - degree, 0);
+        this.transform.rotation = Quaternion.Euler(60, degree - user.direction, 0);
     }
 }

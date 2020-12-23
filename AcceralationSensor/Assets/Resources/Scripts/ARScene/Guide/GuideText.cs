@@ -16,18 +16,25 @@ public class GuideText : MonoBehaviour
         this.labelStyle.normal.textColor = Color.white;
         moveStairButton.gameObject.SetActive(false);
 
-        user = GameObject.Find("ValueSet").GetComponent<ValueSet>().user;
+        GameObject g = GameObject.Find("ValueSet");
+        if (g != null)
+        {
+            user = g.GetComponent<ValueSet>().user;
+        }
     }
 
     private void Update()
     {
-        if (user.route != null)
+        if (user != null)
         {
-            if (user.route.Count >= 3)
+            if (user.route != null)
             {
-                if (user.route[1] < 0)
+                if (user.route.Count >= 3)
                 {
-                    moveStairButton.gameObject.SetActive(true);
+                    if (user.route[1] < 0)
+                    {
+                        moveStairButton.gameObject.SetActive(true);
+                    }
                 }
             }
         }
@@ -52,7 +59,7 @@ public class GuideText : MonoBehaviour
                 text = string.Format("目的地:\n" + user.destination.Name);
                 GUI.Label(new Rect(x, y, w, h), text, this.labelStyle);
 
-                y = Screen.height *3/ 20;
+                y = Screen.height * 3 / 20;
                 text = string.Format("距離:約" + Mathf.Round(user.distance) + "m");
                 GUI.Label(new Rect(x, y, w, h), text, this.labelStyle);
 
@@ -80,12 +87,31 @@ public class GuideText : MonoBehaviour
 
                 GUI.Label(new Rect(x, y, w, h), text, this.labelStyle);
             }
+            else
+            {
+                string text = string.Empty;
+                this.labelStyle.fontSize = Screen.height / 30;
+                y = Screen.height / 20;
+                text = string.Format("目的地:-");
+                GUI.Label(new Rect(x, y, w, h), text, this.labelStyle);
+
+                y = Screen.height * 3 / 20;
+                text = string.Format("距離:-");
+                GUI.Label(new Rect(x, y, w, h), text, this.labelStyle);
+
+                this.labelStyle.fontSize = Screen.height / 22;
+                x = Screen.width / 20 * 3;
+                y = Screen.height * 11 / 20;
+
+                text = "目的地を\n設定してください。";
+                GUI.Label(new Rect(x, y, w, h), text, this.labelStyle);
+            }
         }
         else
         {
             string text = string.Empty;
-            text = string.Format("null");
-
+            this.labelStyle.fontSize = Screen.height / 30;
+            text = "null";
             GUI.Label(new Rect(x, y, w, h), text, this.labelStyle);
         }
     }
