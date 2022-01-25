@@ -1,0 +1,4 @@
+#Tue Jan 25 16:34:18 JST 2022
+base.0=/Users/onukishuntasuku/Documents/GitHub/lab_project/IndoorNavigationDemo/Temp/gradleOut/launcher/build/intermediates/dex/release/mergeDexRelease/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

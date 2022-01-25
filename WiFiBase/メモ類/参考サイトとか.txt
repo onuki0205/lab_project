@@ -1,2 +1,0 @@
-クォータニオンからオイラー角を求めてみる
-https://qiita.com/edo_m18/items/5db35b60112e281f840e

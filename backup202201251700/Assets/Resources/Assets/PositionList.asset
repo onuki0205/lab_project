@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d00a7d3728c54fbbb9b03b4ee63b88c, type: 3}
+  m_Name: PositionList
+  m_EditorClassIdentifier: 
+  sheets:
+  - name: LabRoom1F
+    list:
+    - ID: 1
+      X: 279
+      Y: -14
+    - ID: 2
+      X: 293
+      Y: 31
+    - ID: 3
+      X: 252
+      Y: 22
+    - ID: 4
+      X: 290
+      Y: -2
+    - ID: 5
+      X: 271
+      Y: -30
+    - ID: 6
+      X: 223
+      Y: -91
+    - ID: 7
+      X: 213
+      Y: -158
+    - ID: 8
+      X: 151
+      Y: -100
+    - ID: 9
+      X: 157
+      Y: -147
+    - ID: 10
+      X: 89
+      Y: -157
+    - ID: 11
+      X: 39
+      Y: -139
+    - ID: 12
+      X: 16
+      Y: -197
+    - ID: 13
+      X: -116
+      Y: -134
+    - ID: 14
+      X: -188
+      Y: -175
+    - ID: 15
+      X: -282
+      Y: -135
+    - ID: 16
+      X: -256
+      Y: -107
+    - ID: 17
+      X: -258
+      Y: -153
+    - ID: 18
+      X: -378
+      Y: -135
+    - ID: 19
+      X: -472
+      Y: -220
+    - ID: 20
+      X: -436
+      Y: -147
+    - ID: 21
+      X: -518
+      Y: -111
+    - ID: 22
+      X: -575
+      Y: -135
+    - ID: 23
+      X: -539
+      Y: -171
+    - ID: 24
+      X: -583
+      Y: 75
+    - ID: 25
+      X: -566
+      Y: -104
+    - ID: 26
+      X: -512
+      Y: -4
+    - ID: 27
+      X: -560
+      Y: -31
+    - ID: 28
+      X: -527
+      Y: 84
+    - ID: 29
+      X: -488
+      Y: 57
+    - ID: 30
+      X: -561
+      Y: 75
