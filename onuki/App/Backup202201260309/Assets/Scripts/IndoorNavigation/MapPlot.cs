@@ -25,7 +25,7 @@ public class MapPlot : MonoBehaviour
     void Start()
     {
         addAP();
-        addNode();
+        // addNode();
 
         // Debug.Log("parent  :" + obj.transform.parent);
         // var o = obj.transform.position;
@@ -93,7 +93,7 @@ public class MapPlot : MonoBehaviour
 
             GameObject t = (GameObject)Instantiate(obj,new Vector3((float)(ap.X/25.634),(float)(ap.Y/25.634),0),Quaternion.identity);
             t.transform.parent = AP.transform;
-            t.transform.localScale = new Vector3((float)0.4,(float)0.4,(float)0.15);
+            t.transform.localScale = new Vector3((float)0.7,(float)0.7,(float)0.15);
             // APs.Add(t);
             // Debug.Log("id : " + ap.ID.ToString() + "  x : " + ap.X.ToString() + "  y: " + ap.Y.ToString());
         }
