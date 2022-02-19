@@ -1,0 +1,26 @@
+WiFi Scan
+https://ekulabo.com/network-reachability
+https://gist.github.com/GOROman/4e397a74b6bf3a21353b
+https://developer.android.com/guide/topics/connectivity/wifi-rtt?hl=ja
+https://www.geeksforgeeks.org/indoor-navigation-using-wifi/
+https://8thway.blogspot.com/2015/01/csharp-wlan-ssid.html
+https://qiita.com/satotin/items/fce283d6b391f6f2b380
+    参考のアプリ
+    https://vremsoftwaredevelopment.github.io/WiFiAnalyzer/ 
+
+経路探索アルゴリズム
+    A*
+    https://library-of-algorithm.herokuapp.com/a_star
+    ダイクストラ
+    https://webbibouroku.com/Blog/Article/dijkstra-cs
+
+Trilateration
+の重心計算
+http://yamatyuu.net/other/polygon/index.html
+
+onukiは WiFi Based
+numajiriは Pedometer Based
+
+UnityでExcelデータを使う
+https://squmarigames.com/2018/12/12/unity-excel-importer-maker/
+ARに関してはYouTubeで関連動画見るといいかも
