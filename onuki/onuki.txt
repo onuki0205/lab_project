@@ -24,3 +24,7 @@ numajiriは Pedometer Based
 UnityでExcelデータを使う
 https://squmarigames.com/2018/12/12/unity-excel-importer-maker/
 ARに関してはYouTubeで関連動画見るといいかも
+
+numajiriApp　は　25期　の　沼尻さんのやつバージョンの関係で鵜なく動かなかったと思います。
+Apkは残ってるので、Android Studioを使って、無理矢理インストールすれば使えたよ。
+onukiApp　は　26期　の　小貫のやつ、、同じくバージョンの関係で動かないかも。。

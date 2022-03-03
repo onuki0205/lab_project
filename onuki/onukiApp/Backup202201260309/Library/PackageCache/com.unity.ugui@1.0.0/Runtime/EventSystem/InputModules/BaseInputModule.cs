@@ -12,7 +12,6 @@ namespace UnityEngine.EventSystems
     /// </remarks>
     /// <example>
     /// <code>
-    /// <![CDATA[
     /// using UnityEngine;
     /// using UnityEngine.EventSystems;
     ///
@@ -31,8 +30,7 @@ namespace UnityEngine.EventSystems
     ///         ExecuteEvents.Execute (m_TargetObject, new BaseEventData (eventSystem), ExecuteEvents.moveHandler);
     ///     }
     /// }
-    /// ]]>
-    ///</code>
+    /// </code>
     /// </example>
     public abstract class BaseInputModule : UIBehaviour
     {
@@ -118,8 +116,7 @@ namespace UnityEngine.EventSystems
         /// </summary>
         protected static RaycastResult FindFirstRaycast(List<RaycastResult> candidates)
         {
-            var candidatesCount = candidates.Count;
-            for (var i = 0; i < candidatesCount; ++i)
+            for (var i = 0; i < candidates.Count; ++i)
             {
                 if (candidates[i].gameObject == null)
                     continue;
@@ -153,10 +150,16 @@ namespace UnityEngine.EventSystems
 
             if (Mathf.Abs(x) > Mathf.Abs(y))
             {
-                return x > 0 ? MoveDirection.Right : MoveDirection.Left;
+                if (x > 0)
+                    return MoveDirection.Right;
+                return MoveDirection.Left;
             }
-
-            return y > 0 ? MoveDirection.Up : MoveDirection.Down;
+            else
+            {
+                if (y > 0)
+                    return MoveDirection.Up;
+                return MoveDirection.Down;
+            }
         }
 
         /// <summary>
@@ -185,10 +188,9 @@ namespace UnityEngine.EventSystems
             return null;
         }
 
-        // walk up the tree till a common root between the last entered and the current entered is found
+        // walk up the tree till a common root between the last entered and the current entered is foung
         // send exit events up to (but not inluding) the common root. Then send enter events up to
         // (but not including the common root).
-        // Send move events before exit, after enter, and on hovered objects when pointer data has changed.
         protected void HandlePointerExitAndEnter(PointerEventData currentPointerData, GameObject newEnterTarget)
         {
             // if we have no target / pointerEnter has been deleted
@@ -196,12 +198,8 @@ namespace UnityEngine.EventSystems
             // then exit
             if (newEnterTarget == null || currentPointerData.pointerEnter == null)
             {
-                var hoveredCount = currentPointerData.hovered.Count;
-                for (var i = 0; i < hoveredCount; ++i)
-                {
-                    ExecuteEvents.Execute(currentPointerData.hovered[i], currentPointerData, ExecuteEvents.pointerMoveHandler);
+                for (var i = 0; i < currentPointerData.hovered.Count; ++i)
                     ExecuteEvents.Execute(currentPointerData.hovered[i], currentPointerData, ExecuteEvents.pointerExitHandler);
-                }
 
                 currentPointerData.hovered.Clear();
 
@@ -214,15 +212,7 @@ namespace UnityEngine.EventSystems
 
             // if we have not changed hover target
             if (currentPointerData.pointerEnter == newEnterTarget && newEnterTarget)
-            {
-                if (currentPointerData.IsPointerMoving())
-                {
-                    var hoveredCount = currentPointerData.hovered.Count;
-                    for (var i = 0; i < hoveredCount; ++i)
-                        ExecuteEvents.Execute(currentPointerData.hovered[i], currentPointerData, ExecuteEvents.pointerMoveHandler);
-                }
                 return;
-            }
 
             GameObject commonRoot = FindCommonRoot(currentPointerData.pointerEnter, newEnterTarget);
 
@@ -239,7 +229,6 @@ namespace UnityEngine.EventSystems
                     if (commonRoot != null && commonRoot.transform == t)
                         break;
 
-                    ExecuteEvents.Execute(t.gameObject, currentPointerData, ExecuteEvents.pointerMoveHandler);
                     ExecuteEvents.Execute(t.gameObject, currentPointerData, ExecuteEvents.pointerExitHandler);
                     currentPointerData.hovered.Remove(t.gameObject);
                     t = t.parent;
@@ -255,7 +244,6 @@ namespace UnityEngine.EventSystems
                 while (t != null && t.gameObject != commonRoot)
                 {
                     ExecuteEvents.Execute(t.gameObject, currentPointerData, ExecuteEvents.pointerEnterHandler);
-                    ExecuteEvents.Execute(t.gameObject, currentPointerData, ExecuteEvents.pointerMoveHandler);
                     currentPointerData.hovered.Add(t.gameObject);
                     t = t.parent;
                 }
@@ -334,22 +322,6 @@ namespace UnityEngine.EventSystems
         public virtual bool IsModuleSupported()
         {
             return true;
-        }
-
-        /// <summary>
-        /// Returns Id of the pointer following <see cref="UnityEngine.UIElements.PointerId"/> convention.
-        /// </summary>
-        /// <param name="sourcePointerData">PointerEventData whose pointerId will be converted to UI Toolkit pointer convention.</param>
-        /// <seealso cref="UnityEngine.UIElements.IPointerEvent" />
-        public virtual int ConvertUIToolkitPointerId(PointerEventData sourcePointerData)
-        {
-#if PACKAGE_UITOOLKIT
-            return sourcePointerData.pointerId < 0 ?
-                UIElements.PointerId.mousePointerId :
-                UIElements.PointerId.touchPointerIdBase + sourcePointerData.pointerId;
-#else
-            return -1;
-#endif
         }
     }
 }
